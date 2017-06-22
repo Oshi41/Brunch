@@ -28,10 +28,19 @@ public class Hammer extends BkItem {
 
     public Size _range;
 
+    public static Hammer instance = null;
     public Hammer(Hammers hammers) {
         super(hammers.name);
         setCreativeTab(BookCraft.toolTab);
         //this.efficiencyOnProperMaterial
+    }
+
+    @Override
+    public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, EntityPlayer player) {
+        if (player.capabilities.isCreativeMode && canHarvestBlock((IBlockState) pos)) {
+            return onBlockDestroyed(itemstack, player.getEntityWorld(), player.getEntityWorld().getBlockState(pos), pos, player);
+        }
+        return super.onBlockStartBreak(itemstack, pos, player);
     }
 
     @Override
