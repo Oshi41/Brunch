@@ -1,4 +1,4 @@
-package Bk.Base;
+package Bk.Base.BaseVanilla;
 
 import Bk.BookCraft;
 import net.minecraft.block.Block;

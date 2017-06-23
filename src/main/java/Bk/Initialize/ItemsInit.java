@@ -1,6 +1,6 @@
 package Bk.Initialize;
 
-import Bk.Base.BkItem;
+import Bk.Base.BaseVanilla.BkItem;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 

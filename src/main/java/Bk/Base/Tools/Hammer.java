@@ -1,7 +1,7 @@
-package Bk.Items.Tools;
+package Bk.Base.Tools;
 
+import Bk.Base.BaseVanilla.BkPickaxe;
 import Bk.BookCraft;
-import Bk.Base.BkItem;
 import com.sun.glass.ui.Size;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockTorch;
@@ -24,16 +24,26 @@ import java.util.ArrayList;
 /**
  * Created by User on 23.06.2017.
  */
-public class Hammer extends BkItem {
+public class Hammer extends BkPickaxe {
 
     public Size _range;
 
     public static Hammer instance = null;
-    public Hammer(Hammers hammers) {
-        super(hammers.name);
-        setCreativeTab(BookCraft.toolTab);
-        //this.efficiencyOnProperMaterial
+//    public Hammer(Hammers hammers) {
+//        super(hammers.name);
+//        setCreativeTab(BookCraft.toolTab);
+//        //this.efficiencyOnProperMaterial
+//    }
+
+    public Hammer(Hammers hammers){
+        this(hammers.name, hammers.size, hammers.material);
     }
+    public Hammer(String name, Size range, Item.ToolMaterial material){
+        super(name, material);
+        _range = range;
+        setCreativeTab(BookCraft.toolTab);
+    }
+
 
     @Override
     public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, EntityPlayer player) {

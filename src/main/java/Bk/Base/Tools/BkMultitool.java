@@ -1,5 +1,6 @@
-package Bk.Base;
+package Bk.Base.Tools;
 
+import Bk.Base.Materials;
 import Bk.BookCraft;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirt;
@@ -24,12 +25,18 @@ public class BkMultitool extends ItemTool {
     public static BkMultitool instance = null;
 
     protected BkMultitool(Multitools materialIn) {
-        super(materialIn.material, null);
+        this(materialIn.name, materialIn.material, materialIn.isUnbreakable);
+    }
+    public BkMultitool(String name, ToolMaterial material, boolean isUnbreakable){
+        super(material, null);
 
+        this.name = name;
         setUnlocalizedName(name);
         setRegistryName(name);
         setCreativeTab(BookCraft.toolTab);
-        setMaxDamage((int) (materialIn.material.getMaxUses() * 2.5));
+        setMaxDamage((int) (material.getMaxUses() * 2.5));
+        if (isUnbreakable)
+            setMaxDamage(-1);
         hasSubtypes = true;
     }
 

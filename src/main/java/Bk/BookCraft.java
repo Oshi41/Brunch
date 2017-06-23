@@ -30,6 +30,10 @@ public class BookCraft {
             return new ItemStack(Items.IRON_PICKAXE);
         }
     };
+    public static final CreativeTabs swordsTab= new CreativeTabs("Melee weapon") {
+        @Override
+        public ItemStack getTabIconItem() { return new ItemStack(Items.IRON_SWORD); }
+    };
     //endregion
 
     //endregion
