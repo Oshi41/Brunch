@@ -23,6 +23,9 @@ public class BookCraft {
 
     public static String MOD_ID = "Bk";
 
+    @Mod.Instance
+    public static BookCraft instance;
+
     //region Creative tabs
     public static final CreativeTabs toolTab = new CreativeTabs("Tools") {
         @Override
@@ -33,6 +36,12 @@ public class BookCraft {
     public static final CreativeTabs swordsTab= new CreativeTabs("Melee weapon") {
         @Override
         public ItemStack getTabIconItem() { return new ItemStack(Items.IRON_SWORD); }
+    };
+    public static final CreativeTabs rangedTabs = new CreativeTabs("Ranged weapon") {
+        @Override
+        public ItemStack getTabIconItem() {
+            return new ItemStack(Items.BOW);
+        }
     };
     //endregion
 
