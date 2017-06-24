@@ -1,6 +1,7 @@
 package Bk.Proxy;
 
 import Bk.BookCraft;
+import Bk.Initialize.ItemsInit;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
@@ -21,10 +22,7 @@ public class ClientProxy extends CommonProxy {
     public void onPreInit(FMLPreInitializationEvent event) {
         super.onPreInit(event);
         //MinecraftForge.EVENT_BUS.register(new SwordEvents());
-
-
-//        BlocksInit.register();
-//        ItemsInit.register();
+        ItemsInit.init();
     }
 
     @Override

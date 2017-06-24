@@ -1,30 +1,32 @@
 package Bk.Initialize;
 
+import Bk.Base.BaseVanilla.BkAxe;
 import Bk.Base.BaseVanilla.BkItem;
+import Bk.Base.Tools.Boers;
 import Bk.Base.Tools.Hammer;
+import Bk.BookCraft;
+import com.sun.glass.ui.Size;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created by User on 22.06.2017.
  */
 public class ItemsInit  {
 
-    ArrayList<Class> classes = new ArrayList<Class>(Arrays.asList(
-            BkItem.class
-    ));
-
     //region Fields
     public static Hammer hammes;
+    public static Boers boer;
+    public static BkAxe axe;
     //endregion
 
     public static void init(){
-        hammes = register(new Hammer(Hammer.Hammers.BUILDER_HAMMER));
+
+        hammes = registerWithSubtypes(new Hammer(Hammer.Hammers.LEGENDARY_HAMMER));
+        boer = register(new Boers("boer", new Size(5,3), Item.ToolMaterial.DIAMOND));
+        axe = register(new BkAxe("axe", Item.ToolMaterial.DIAMOND, 7, 7,1000,20));
     }
 
     //region Helping Method
@@ -42,10 +44,12 @@ public class ItemsInit  {
         NonNullList<ItemStack> items = NonNullList.create();
 
         item.getSubItems(item, item.getCreativeTab(), items);
+        int i = 0;
         for(ItemStack stack : items){
-
+            BookCraft.proxy.registerItemRenderer(stack.getItem(), i,
+                    stack.getItem().getRegistryName().getResourcePath());
         }
         return register(item);
     }
-    //endregiuon
+    //endregion
 }

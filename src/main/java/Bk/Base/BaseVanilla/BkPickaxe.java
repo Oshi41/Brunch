@@ -6,7 +6,7 @@ import net.minecraft.item.ItemPickaxe;
 /**
  * Created by User on 23.06.2017.
  */
-public class BkPickaxe extends ItemPickaxe {
+public class BkPickaxe extends ItemPickaxe implements IBkBase {
 
     protected String name;
     public static BkPickaxe instance = null;

@@ -6,7 +6,7 @@ import net.minecraft.item.Item;
 /**
  * Created by User on 23.06.2017.
  */
-public class BkItem extends Item {
+public class BkItem extends Item implements IBkBase {
 
     protected String name;
     public static BkItem instance = null;

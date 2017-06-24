@@ -1,5 +1,6 @@
 package Bk.Base.Tools;
 
+import Bk.Base.BaseVanilla.IBkBase;
 import Bk.Base.Materials;
 import Bk.BookCraft;
 import net.minecraft.block.Block;
@@ -19,7 +20,7 @@ import net.minecraft.world.World;
 /**
  * Created by User on 23.06.2017.
  */
-public class BkMultitool extends ItemTool {
+public class BkMultitool extends ItemTool implements IBkBase {
 
     protected String name;
     public static BkMultitool instance = null;
@@ -110,6 +111,11 @@ public class BkMultitool extends ItemTool {
             subItems.add(new ItemStack(new BkMultitool(tool), 1, i));
             i++;
         }
+    }
+
+    @Override
+    public void registerItemModel() {
+        BookCraft.proxy.registerItemRenderer(this, 0, name);
     }
 
     //region Help enum

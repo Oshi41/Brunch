@@ -11,19 +11,17 @@ import net.minecraftforge.fml.common.event.*;
 /**
  * Created by User on 22.06.2017.
  */
-@Mod(modid = "Bk",
-name = "BookCraft",
-version = "0.1")
+@Mod(modid = BookCraft.MOD_ID)
 public class BookCraft {
 
     //region Fields
     @SidedProxy(clientSide = "Bk.Proxy.ClientProxy",
-                serverSide = "Bk.Proxy.ServerProxy")
+            serverSide = "Bk.Proxy.ServerProxy")
     public static CommonProxy proxy;
 
-    public static String MOD_ID = "Bk";
+    public final static String MOD_ID = "bk";
 
-    @Mod.Instance
+    @Mod.Instance(BookCraft.MOD_ID)
     public static BookCraft instance;
 
     //region Creative tabs
@@ -33,9 +31,11 @@ public class BookCraft {
             return new ItemStack(Items.IRON_PICKAXE);
         }
     };
-    public static final CreativeTabs swordsTab= new CreativeTabs("Melee weapon") {
+    public static final CreativeTabs swordsTab = new CreativeTabs("Melee weapon") {
         @Override
-        public ItemStack getTabIconItem() { return new ItemStack(Items.IRON_SWORD); }
+        public ItemStack getTabIconItem() {
+            return new ItemStack(Items.IRON_SWORD);
+        }
     };
     public static final CreativeTabs rangedTabs = new CreativeTabs("Ranged weapon") {
         @Override
@@ -47,6 +47,7 @@ public class BookCraft {
 
     //endregion
 
+
     //region Loading Events
 
     @Mod.EventHandler
@@ -56,6 +57,7 @@ public class BookCraft {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+
         proxy.onPreInit(event);
     }
 

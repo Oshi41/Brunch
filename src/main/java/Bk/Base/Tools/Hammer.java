@@ -17,7 +17,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeHooks;
 
 import java.util.ArrayList;
 
@@ -47,6 +46,8 @@ public class Hammer extends BkPickaxe {
 
     @Override
     public boolean onBlockStartBreak(ItemStack itemstack, BlockPos pos, EntityPlayer player) {
+        if (player.getEntityWorld().isRemote) return true;
+
         if (player.capabilities.isCreativeMode && canHarvestBlock((IBlockState) pos)) {
             return onBlockDestroyed(itemstack, player.getEntityWorld(), player.getEntityWorld().getBlockState(pos), pos, player);
         }
@@ -55,10 +56,11 @@ public class Hammer extends BkPickaxe {
 
     @Override
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+
         if (hand == EnumHand.MAIN_HAND){
             if (!player.isSneaking()) {
                 for (ItemStack s : player.inventory.mainInventory) {
-                    if (s != null && s.isEmpty()) {
+                    if (s != null && !s.isEmpty()) {
                         Item item = s.getItem();
                         if (item != null && item instanceof ItemBlock && ((ItemBlock) item).block instanceof BlockTorch) {
                             return item.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
@@ -68,7 +70,7 @@ public class Hammer extends BkPickaxe {
             }
             else {
                 for (ItemStack s : player.inventory.mainInventory) {
-                    if (s != null && s.isEmpty()) {
+                    if (s != null && !s.isEmpty()) {
                         Item item = s.getItem();
                         if (item != null && item instanceof ItemBlock && ((ItemBlock) item).canPlaceBlockOnSide(worldIn, pos, facing, player, s)){
                             return item.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
@@ -98,7 +100,7 @@ public class Hammer extends BkPickaxe {
 
                 Block block = worldIn.getBlockState(pos1).getBlock();
                 //Проходим только по тому, что можем срубить
-                if (ForgeHooks.canToolHarvestBlock(worldIn, pos1, stack)){
+                if (stack.canHarvestBlock(state)){
 
                     block.harvestBlock(worldIn, (EntityPlayer)entityLiving, pos1,
                             worldIn.getBlockState(pos1), worldIn.getTileEntity(pos1), stack);

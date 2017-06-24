@@ -22,14 +22,14 @@ import java.util.List;
 /**
  * Created by User on 24.06.2017.
  */
-public class BkAxe extends ItemAxe {
+public class BkAxe extends ItemAxe implements IBkBase {
 
     public final String name;
     public static BkAxe instance = null;
     private final int amount;
     private final double range;
 
-    protected BkAxe(String name,ToolMaterial material, float damage, float speed, int amount, double range) {
+    public BkAxe(String name,ToolMaterial material, float damage, float speed, int amount, double range) {
         super(material, damage, speed);
         this.name = name;
         this.range = range;
@@ -62,7 +62,7 @@ public class BkAxe extends ItemAxe {
     private LinkedList<BlockPos> findLogs(World worldIn, BlockPos pos){
 
         int index = 0, lowY = pos.getY(), x, y, z;
-        LinkedList<BlockPos> list = new LinkedList<>();
+        LinkedList<BlockPos> list = new LinkedList<BlockPos>();
         BlockPos newPos;
         //First block
         list.add(pos);
@@ -95,7 +95,7 @@ public class BkAxe extends ItemAxe {
         return list;
     }
     private LinkedList<BlockPos> findLeaves(World world, LinkedList<BlockPos> poses){
-        LinkedList<BlockPos> leaves = new LinkedList<>();
+        LinkedList<BlockPos> leaves = new LinkedList<BlockPos>();
 
         for (BlockPos pos : poses){
             for (int x = -2; x <= 2; x++)
@@ -116,12 +116,12 @@ public class BkAxe extends ItemAxe {
     }
     private LinkedList<ItemStack> destroyBlocks(World world, EntityPlayer player, LinkedList<BlockPos>... pos){
 
-        LinkedList<BlockPos> poses = new LinkedList<>();
+        LinkedList<BlockPos> poses = new LinkedList<BlockPos>();
 
         for(LinkedList<BlockPos> tempPos : pos){
             poses.addAll(tempPos);
         }
-        LinkedList<ItemStack> drops = new LinkedList<>();
+        LinkedList<ItemStack> drops = new LinkedList<ItemStack>();
         while (poses.size() > 0){
 
             IBlockState state = world.getBlockState(poses.getFirst());

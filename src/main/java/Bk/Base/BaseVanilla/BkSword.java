@@ -10,7 +10,7 @@ import net.minecraft.item.ItemSword;
 /**
  * Created by User on 23.06.2017.
  */
-public class BkSword extends ItemSword {
+public class BkSword extends ItemSword implements IBkBase {
 
     private boolean hasSpecialEffect;
     private String name;
