@@ -2,6 +2,7 @@ package Bk.Base.BaseVanilla;
 
 import Bk.Base.Entity.BkEntityContainer;
 import Bk.BookCraft;
+import Bk.Utils.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.state.IBlockState;
@@ -11,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -56,6 +58,10 @@ public class BkAxe extends ItemAxe implements IBkBase {
 
         BkEntityContainer entityContainer = new BkEntityContainer(worldIn, drop, pos);
         worldIn.spawnEntity(entityContainer);
+        double d6 = (double)pos.getX() + worldIn.rand.nextDouble();
+        double d11 = (double)pos.getY() + worldIn.rand.nextDouble();
+        double d16 = (double)(pos.getZ() + 1) - worldIn.rand.nextDouble() * 0.10000000149011612D;
+        worldIn.spawnParticle(EnumParticleTypes.CRIT_MAGIC, d6, d11, d16, 0.0D, 0.0D, 0.0D, new int[0]);
         //todo spawn entity with container
     }
 
@@ -79,7 +85,7 @@ public class BkAxe extends ItemAxe implements IBkBase {
                         if (list.size() > amount && pos.getDistance(newPos.getX(), newPos.getY(), newPos.getZ()) > range) break;
 
                         if (!worldIn.isAirBlock(newPos)) {
-                            if (worldIn.getBlockState(newPos) instanceof BlockLog) {
+                            if (worldIn.getBlockState(newPos).getBlock() instanceof BlockLog) {
                                 if (!list.contains(newPos))
                                     list.add(newPos);
                             }
@@ -121,7 +127,7 @@ public class BkAxe extends ItemAxe implements IBkBase {
         for(LinkedList<BlockPos> tempPos : pos){
             poses.addAll(tempPos);
         }
-        LinkedList<ItemStack> drops = new LinkedList<ItemStack>();
+        LinkedList<ItemStack> drops = new LinkedList<>();
         while (poses.size() > 0){
 
             IBlockState state = world.getBlockState(poses.getFirst());
@@ -135,7 +141,10 @@ public class BkAxe extends ItemAxe implements IBkBase {
 
             poses.remove();
         }
-        return drops;
+        LinkedList<ItemStack> results = Utils.mergeItems(drops);
+
+        return results;
+        //return drops;
     }
     private int getTreeHeight(World world, BlockPos pos){
         BlockPos down = pos,
