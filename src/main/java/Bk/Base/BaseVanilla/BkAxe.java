@@ -8,7 +8,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
@@ -27,8 +26,8 @@ public class BkAxe extends ItemAxe {
 
     public final String name;
     public static BkAxe instance = null;
-    public final int amount;
-    public final double range;
+    private final int amount;
+    private final double range;
 
     protected BkAxe(String name,ToolMaterial material, float damage, float speed, int amount, double range) {
         super(material, damage, speed);
@@ -41,8 +40,8 @@ public class BkAxe extends ItemAxe {
 
     @Override
     public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos, EntityLivingBase entityLiving) {
-        if (state.getBlock() == Blocks.LOG || state.getBlock() == Blocks.LOG2){
-
+        if (state.getBlock() instanceof BlockLog && entityLiving instanceof EntityPlayer){
+            chopTree(stack, worldIn, state, pos, (EntityPlayer) entityLiving);
         }
 
         return super.onBlockDestroyed(stack, worldIn, state, pos, entityLiving);
@@ -63,7 +62,7 @@ public class BkAxe extends ItemAxe {
     private LinkedList<BlockPos> findLogs(World worldIn, BlockPos pos){
 
         int index = 0, lowY = pos.getY(), x, y, z;
-        LinkedList<BlockPos> list = new LinkedList<BlockPos>();
+        LinkedList<BlockPos> list = new LinkedList<>();
         BlockPos newPos;
         //First block
         list.add(pos);
@@ -96,7 +95,7 @@ public class BkAxe extends ItemAxe {
         return list;
     }
     private LinkedList<BlockPos> findLeaves(World world, LinkedList<BlockPos> poses){
-        LinkedList<BlockPos> leaves = new LinkedList<BlockPos>();
+        LinkedList<BlockPos> leaves = new LinkedList<>();
 
         for (BlockPos pos : poses){
             for (int x = -2; x <= 2; x++)
@@ -117,7 +116,7 @@ public class BkAxe extends ItemAxe {
     }
     private LinkedList<ItemStack> destroyBlocks(World world, EntityPlayer player, LinkedList<BlockPos>... pos){
 
-        LinkedList<BlockPos> poses = new LinkedList<BlockPos>();
+        LinkedList<BlockPos> poses = new LinkedList<>();
 
         for(LinkedList<BlockPos> tempPos : pos){
             poses.addAll(tempPos);
@@ -130,7 +129,7 @@ public class BkAxe extends ItemAxe {
             List<ItemStack> tempDrop = block.getDrops(world, poses.getFirst(), state,
                     EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, player.getHeldItemMainhand()));
             if (block.removedByPlayer(state, world, poses.getFirst(), player, true)) {
-                if (tempDrop != null && tempDrop.size() > 0)
+                if (tempDrop.size() > 0)
                     drops.addAll(tempDrop);
             }
 
@@ -141,8 +140,8 @@ public class BkAxe extends ItemAxe {
     private int getTreeHeight(World world, BlockPos pos){
         BlockPos down = pos,
                 up = pos;
-        boolean findUp = false,
-                findDown = false;
+        boolean findUp,
+                findDown;
         int y = 0;
 
         do {
@@ -180,7 +179,10 @@ public class BkAxe extends ItemAxe {
         }
         while (findUp);
 
-        return up.getY() - down.getY();
+        int result =  up.getY() - down.getY();
+        return result > range
+                ? (int) range
+                : result;
     }
 
     //endregion
