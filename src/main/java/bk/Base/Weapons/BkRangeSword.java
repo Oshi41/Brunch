@@ -1,9 +1,7 @@
 package bk.Base.Weapons;
 
 import bk.Base.BaseVanilla.BkSword;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -41,17 +39,47 @@ public class BkRangeSword extends BkSword {
         float f6 = f3 * f4;
         float f7 = f2 * f4;
         //Only changed this, lol
-        double d3 = (playerIn instanceof EntityPlayerMP) ? range : 5;
+        double d3 = (playerIn instanceof EntityPlayer) ? range : 5;
         Vec3d vec3d1 = vec3d.addVector((double)f6 * d3, (double)f5 * d3, (double)f7 * d3);
         return worldIn.rayTraceBlocks(vec3d, vec3d1, useLiquids, !useLiquids, false);
     }
 
     public void attack(World worldIn, EntityPlayer player){
-        RayTraceResult res = rayTrace(worldIn, player, false);
-        if (res.typeOfHit == RayTraceResult.Type.ENTITY){
-            if (res.entityHit instanceof EntityLivingBase){
-                player.attackTargetEntityWithCurrentItem(res.entityHit);
-            }
-        }
+
+//        EntityThrowable entity = new EntityThrowable(worldIn) {
+//            @Override
+//            protected void onImpact(RayTraceResult result) {
+//                return;
+//            }
+//
+//            @Override
+//            protected void setSize(float width, float height) {
+//                super.setSize(width, height);
+//            }
+//        };
+//
+//        entity.setLocationAndAngles(player.posX, player.posY, player.posZ, player.cameraYaw, player.cameraPitch);
+//        AxisAlignedBB axisAlignedBB = new AxisAlignedBB(player.getPositionVector(), player.getPositionVector().scale(range));
+//
+//        List<Entity> entities = worldIn.getEntitiesWithinAABBExcludingEntity(player, axisAlignedBB);
+//        if (entities != null && entities.size() > 0){
+//            for (Entity entity : entities){
+//                if (entity instanceof EntityLivingBase) {
+//                    player.attackTargetEntityWithCurrentItem(entity);
+//                    return;
+//                }
+//            }
+//        }
+
+        //Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
+        //RayTraceResult res = Minecraft.getMinecraft().entityRenderer.getMouseOver();
+        //RayTraceResult res = Minecraft.getMinecraft().objectMouseOver;
+        //RayTraceResult res = player.rayTrace(range, 1);
+        //RayTraceResult res = rayTrace(worldIn, player, false);
+//        if (res != null && res.typeOfHit == RayTraceResult.Type.ENTITY){
+//            if (res.entityHit instanceof EntityLivingBase){
+//                player.attackTargetEntityWithCurrentItem(res.entityHit);
+//            }
+//        }
     }
 }

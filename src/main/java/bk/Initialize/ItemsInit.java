@@ -5,6 +5,8 @@ import bk.Base.BaseVanilla.IBkBase;
 import bk.Base.Tools.Boers;
 import bk.Base.Tools.Hammer;
 import bk.BookCraft;
+import bk.Items.LavaHammer;
+import bk.Items.Weapons.AngelSword;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -18,12 +20,22 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class ItemsInit  {
 
     //region Fields
+
+    //Hammers
     public static Hammer BuilderHammer;
     public static Hammer LightHammer;
     public static Hammer Mjöllnir;
     public static Hammer WarHammer;
     public static Hammer LegendaryHammer;
+    public static bk.Items.LavaHammer LavaHammer;
+
+    //Swords
+    public static AngelSword angelSword;
+
+    //Boers
     public static Boers boer;
+
+    //Axes
     public static BkAxe axe;
     //endregion
 
@@ -35,6 +47,8 @@ public class ItemsInit  {
         Mjöllnir = register(new Hammer(Hammer.Hammers.MJÖLLNIR));
         WarHammer = register(new Hammer(Hammer.Hammers.WAR_HAMMER));
         LegendaryHammer = register(new Hammer(Hammer.Hammers.LEGENDARY_HAMMER));
+        LavaHammer = register(new LavaHammer());
+        angelSword = register(new AngelSword());
     }
 
     //region Helping Method

@@ -43,7 +43,8 @@ public class Hammer extends BkPickaxe {
         super(name, material);
         this._range = range;
         setCreativeTab(BookCraft.toolTab);
-        hasSubtypes = false;
+        //hasSubtypes = false;
+        setHasSubtypes(false);
         this.efficiencyOnProperMaterial /= MathHelper.sqrt(_range.width*_range.height);
     }
 
@@ -53,7 +54,10 @@ public class Hammer extends BkPickaxe {
         if (player.getEntityWorld().isRemote) return false;
 
         if (player.capabilities.isCreativeMode && ForgeHooks.canToolHarvestBlock(player.getEntityWorld(), pos, itemstack)) {
-            return onBlockDestroyed(itemstack, player.getEntityWorld(), player.getEntityWorld().getBlockState(pos), pos, player);
+            BlockPos[] toBreak = getBlockRange(player.getEntityWorld(), pos, player);
+            for (BlockPos pos1 : toBreak)
+                if (ForgeHooks.canToolHarvestBlock(player.getEntityWorld(), pos1, itemstack))
+                    player.getEntityWorld().destroyBlock(pos1, false);
         }
         return super.onBlockStartBreak(itemstack, pos, player);
     }
@@ -147,7 +151,8 @@ public class Hammer extends BkPickaxe {
         LIGHT_HAMMER("LightHammer", new Size(2,2), ToolMaterial.IRON),
         MJÖLLNIR("Mjöllnir", new Size(3,2), ToolMaterial.DIAMOND),
         WAR_HAMMER("WarHammer", new Size(2,1), ToolMaterial.DIAMOND),
-        LEGENDARY_HAMMER("LegendaryHammer", new Size(5,3), ToolMaterial.DIAMOND);
+        LEGENDARY_HAMMER("LegendaryHammer", new Size(5,3), ToolMaterial.DIAMOND),
+        LAVA_HAMMER("LavaHammer", new Size(3,1), ToolMaterial.DIAMOND);
 
         public final String name;
         public final Size size;
@@ -165,7 +170,7 @@ public class Hammer extends BkPickaxe {
     //endregion
 
     //region Helping methods
-    private BlockPos[] getBlockRange(World worldIn, BlockPos pos, EntityPlayer player){
+    public BlockPos[] getBlockRange(World worldIn, BlockPos pos, EntityPlayer player){
         ArrayList<BlockPos> poses = new ArrayList<BlockPos>();
         BlockPos begin = pos, end = pos;
         RayTraceResult orientation = rayTrace(worldIn, player, false);

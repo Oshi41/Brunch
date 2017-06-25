@@ -9,8 +9,10 @@ import java.util.LinkedList;
  */
 public class Utils {
 
-    public static LinkedList<ItemStack> mergeItems(LinkedList<ItemStack> stacks){
+    public static LinkedList<ItemStack> mergeItems(LinkedList<ItemStack> stacksOrigin){
         LinkedList<ItemStack> results = new LinkedList<>();
+
+        LinkedList<ItemStack> stacks = (LinkedList<ItemStack>) stacksOrigin.clone();
 
         for (int i = 0; i < stacks.size(); i++){
             int finalI = i;
@@ -25,7 +27,6 @@ public class Utils {
             }
             else results.add(stacks.get(i));
         }
-        //stacks.getFirst().splitStack()
 
         LinkedList<ItemStack> toReturn = new LinkedList<>();
         for (ItemStack stack : results){
@@ -33,6 +34,7 @@ public class Utils {
                 toReturn.add(stack.splitStack(64));
             }
         }
+
         //toReturn.addAll(results);
         return toReturn;
     }
