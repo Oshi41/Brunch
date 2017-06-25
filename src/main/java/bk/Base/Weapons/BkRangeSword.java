@@ -1,7 +1,9 @@
 package bk.Base.Weapons;
 
 import bk.Base.BaseVanilla.BkSword;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -46,17 +48,38 @@ public class BkRangeSword extends BkSword {
 
     public void attack(World worldIn, EntityPlayer player){
 
-//        EntityThrowable entity = new EntityThrowable(worldIn) {
-//            @Override
-//            protected void onImpact(RayTraceResult result) {
-//                return;
-//            }
-//
-//            @Override
-//            protected void setSize(float width, float height) {
-//                super.setSize(width, height);
-//            }
-//        };
+        EntityThrowable entity = new EntityThrowable(worldIn, player) {
+            int liveTime;
+            @Override
+            protected void entityInit() {
+                super.entityInit();
+                Vec3d pos = getThrower().getLookVec().scale(3);
+                setPositionAndRotation(pos.xCoord, pos.yCoord, pos.zCoord, getThrower().rotationYaw, getThrower().rotationPitch);
+                setVelocity(1,1,1);
+            }
+
+            @Override
+            protected void onImpact(RayTraceResult result) {
+                if (result.typeOfHit == RayTraceResult.Type.ENTITY) {
+                    if (result.entityHit != getThrower()) {
+                        if (getThrower() instanceof EntityPlayer &&
+                                result.entityHit instanceof EntityLivingBase) {
+                            ((EntityPlayer) getThrower()).attackTargetEntityWithCurrentItem(result.entityHit);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onUpdate() {
+                super.onUpdate();
+                liveTime++;
+                if (liveTime >= range) setDead();
+            }
+        };
+        worldIn.spawnEntity(entity);
+
+            //        };
 //
 //        entity.setLocationAndAngles(player.posX, player.posY, player.posZ, player.cameraYaw, player.cameraPitch);
 //        AxisAlignedBB axisAlignedBB = new AxisAlignedBB(player.getPositionVector(), player.getPositionVector().scale(range));
