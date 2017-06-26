@@ -47,8 +47,11 @@ public class EffectsHelper {
 
     public static void spawnLightning(EntityPlayer player, EntityLivingBase target, ItemStack stack){
         if (player.getPositionVector().distanceTo(target.getPositionVector()) > 5){
-            target.getEntityWorld().spawnEntity(new EntityLightningBolt(target.getEntityWorld(),
-                    target.posX, target.posY, target.posZ, true));
+            EntityLightningBolt entityLightningBolt = new EntityLightningBolt(target.getEntityWorld(),
+                    target.posX, target.posY, target.posZ, true);
+            target.getEntityWorld().spawnEntity(entityLightningBolt);
+//            target.getEntityWorld().spawnEntity(new EntityLightningBolt(target.getEntityWorld(),
+//                    target.posX, target.posY, target.posZ, true));
             stack.damageItem(2, player);
         }
     }
