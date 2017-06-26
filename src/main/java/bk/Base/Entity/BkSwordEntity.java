@@ -24,7 +24,7 @@ public class BkSwordEntity extends EntityThrowable {
         setSize(0.1F,0.1F);
         setNoGravity(true);
         setHeadingFromThrower(throwerIn, throwerIn.rotationPitch, throwerIn.rotationYaw,
-                1,30,0);
+                1,7,0);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class BkSwordEntity extends EntityThrowable {
         EntityPlayer player = (EntityPlayer) getThrower();
         if (result.entityHit instanceof EntityLivingBase
                 && getThrower().getHeldItemMainhand().getItem() instanceof BkRangeSword) {
-            ((BkRangeSword) getThrower().getHeldItemMainhand().getItem()).performAttack(((EntityPlayer) getThrower()), result.entityHit);
+//            ((BkRangeSword) getThrower().getHeldItemMainhand().getItem()).performAttack(((EntityPlayer) getThrower()), result.entityHit);
         }
         setDead();
     }

@@ -15,7 +15,7 @@ public class EventHook {
         ItemStack itemStack = event.getEntityPlayer().getHeldItemMainhand();
 
         if (itemStack.getItem() instanceof BkRangeSword){
-            ((BkRangeSword)itemStack.getItem()).attack(event.getWorld(), event.getEntityPlayer());
+            ((BkRangeSword)itemStack.getItem()).performAttack(event.getWorld(), event.getEntityPlayer());
         }
     }
 
