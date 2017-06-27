@@ -25,6 +25,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import java.util.List;
 
@@ -95,17 +96,17 @@ public class BkRangeSword extends BkSword {
     {
         Minecraft minecraft = Minecraft.getMinecraft();
         PlayerControllerMP controllerMP = minecraft.playerController;
-        NetHandlerPlayClient connection = minecraft.getConnection();
         controllerMP.updateController();
+        NetHandlerPlayClient connection = minecraft.getConnection();
         connection.sendPacket(new CPacketUseEntity(targetEntity));
 
         if (!controllerMP.isSpectator())
         {
             attackTask(player, targetEntity);
             player.resetCooldown();
-            //ticksSinceLastSwing = 0;
         }
-        minecraft.player.swingArm(EnumHand.MAIN_HAND);
+        player.swingArm(EnumHand.MAIN_HAND);
+        FMLCommonHandler.instance().fireMouseInput();
     }
 //
     private void attackTask(EntityPlayer player,  Entity targetEntity){
@@ -127,14 +128,14 @@ public class BkRangeSword extends BkSword {
                     f1 = EnchantmentHelper.getModifierForCreature(player.getHeldItemMainhand(), EnumCreatureAttribute.UNDEFINED);
                 }
 
-                float f2 = MathHelper.clamp(((float)ticksSinceLastSwing + 0.5F) / player.getCooldownPeriod(), 0.0F, 1.0F);
+                float f2 = 1.0F;
                 f = f * (0.2F + f2 * f2 * 0.8F);
                 f1 = f1 * f2;
                 ticksSinceLastSwing = 0;
 
                 if (f > 0.0F || f1 > 0.0F)
                 {
-                    boolean flag = true;
+                    boolean flag = f2 > 0.9F;;
                     boolean flag1 = false;
                     int i = 0;
                     i = i + EnchantmentHelper.getKnockbackModifier(player);
