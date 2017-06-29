@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.stats.AchievementList;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.DamageSource;
@@ -94,6 +95,8 @@ public class BkRangeSword extends BkSword {
      */
     public void attack(EntityPlayer player,  Entity targetEntity)
     {
+        MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+        
         Minecraft minecraft = Minecraft.getMinecraft();
         PlayerControllerMP controllerMP = minecraft.playerController;
         controllerMP.updateController();
@@ -106,9 +109,8 @@ public class BkRangeSword extends BkSword {
             player.resetCooldown();
         }
         player.swingArm(EnumHand.MAIN_HAND);
-        FMLCommonHandler.instance().fireMouseInput();
     }
-//
+
     private void attackTask(EntityPlayer player,  Entity targetEntity){
 
         if (!net.minecraftforge.common.ForgeHooks.onPlayerAttackTarget(player, targetEntity)) return;
