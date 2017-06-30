@@ -7,6 +7,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 
+import java.util.List;
+
 /**
  * Created by User on 23.06.2017.
  */
@@ -52,5 +54,12 @@ public class BkSword extends ItemSword implements IBkBase {
 
     public void registerItemModel() {
         BookCraft.proxy.registerItemRenderer(this, 0, name);
+    }
+    
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+        super.addInformation(stack, playerIn, tooltip, advanced);
+        
+        //tooltip.add(String.format("Usages {0}/{1}", stack.getItemDamage(), stack.getMaxDamage()));
     }
 }

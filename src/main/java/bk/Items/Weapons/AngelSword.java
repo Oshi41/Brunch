@@ -14,7 +14,7 @@ public class AngelSword extends BkRangeSword {
 
 
     public AngelSword() {
-        super("AngelSword", ToolMaterial.DIAMOND, true, 3, 25);
+        super("AngelSword", ToolMaterial.DIAMOND, true, 3, 9.5F);
     }
 
     @Override

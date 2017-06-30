@@ -1,6 +1,7 @@
 package bk.Items;
 
 import bk.Base.Tools.Hammer;
+import bk.Utils.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -14,10 +15,10 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeHooks;
 import scala.actors.threadpool.Arrays;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -56,6 +57,8 @@ public class LavaHammer extends Hammer {
     }
 
     public boolean burnTask(World worldIn, EntityLivingBase entityLiving, ItemStack stack, BlockPos pos){
+        if (!(entityLiving instanceof EntityPlayer)) return false;
+        
         ArrayList<BlockPos> poses = new ArrayList<>();
         if (entityLiving.isSneaking()){
             poses.add(pos);
@@ -64,20 +67,10 @@ public class LavaHammer extends Hammer {
             poses.addAll(Arrays.asList(getBlockRange(worldIn, pos, (EntityPlayer)entityLiving)));
         }
 
-        ArrayList<ItemStack> drops = new ArrayList<>();
-        for (BlockPos blockPos : poses){
-            if (ForgeHooks.canToolHarvestBlock(worldIn, blockPos, stack)){
-                Block block = worldIn.getBlockState(blockPos).getBlock();
-                List<ItemStack> tempDrop = block.getDrops(worldIn, blockPos,
-                        worldIn.getBlockState(blockPos),
-                        EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, entityLiving.getHeldItemMainhand()));
-                if (block.removedByPlayer(worldIn.getBlockState(blockPos), worldIn, blockPos, (EntityPlayer) entityLiving, true)) {
-                    if (tempDrop.size() > 0)
-                        drops.addAll(tempDrop);
-                }
-            }
-        }
-        ArrayList<ItemStack> temp = new ArrayList<>(drops);
+        ArrayList<ItemStack> drops = Utils.destroyArea(worldIn, poses, stack, (EntityPlayer) entityLiving);
+        
+
+        LinkedList<ItemStack> temp = Utils.mergeItems(new LinkedList<>(drops));
         drops = new ArrayList<>();
 
         for (ItemStack stack1 : temp){
@@ -90,7 +83,6 @@ public class LavaHammer extends Hammer {
                             getEnchantmentLevel(Enchantments.FORTUNE, stack) + 2) - 1;
                     if (fortune < 0) fortune = 0;
                     result.setCount(result.getCount() * (fortune + 1));
-                    //result.grow(fortune + 1);
                 }
                 drops.add(result.copy());
             }
@@ -102,7 +94,17 @@ public class LavaHammer extends Hammer {
             Block.spawnAsEntity(worldIn, pos, drops.get(i));
         }
 
-        stack.damageItem(5, entityLiving);
+        
+        int damage = (int)(1.5 * EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, stack));
+        
+        stack.damageItem(damage, entityLiving);
         return true;
+    }
+    
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+        super.addInformation(stack, playerIn, tooltip, advanced);
+        if (canBurn)
+            tooltip.add("Damage increased to " + (int) (1.5 * EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, stack)));
     }
 }

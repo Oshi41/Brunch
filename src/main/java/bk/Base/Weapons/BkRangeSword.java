@@ -43,6 +43,13 @@ public class BkRangeSword extends BkSword {
         this.range = range;
     }
     
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+        super.addInformation(stack, playerIn, tooltip, advanced);
+        tooltip.add("Damage range increased to " + ((int) range + ". Can damage whole areas"));
+    }
+    
+    //region Helping methods
     public void performAttack(World worldIn, EntityPlayer player) {
         Vec3d start = player.getPositionEyes(1),
             end = start.add(player.getLookVec().scale(range));
@@ -66,7 +73,6 @@ public class BkRangeSword extends BkSword {
         attackTask(player, targetEntity);
         CommonProxy.simpleNetworkWrapper.sendToServer(new AttackPacket((EntityLivingBase) targetEntity));
     }
-
     private void attackTask(EntityPlayer player,  Entity targetEntity){
 
         if (!net.minecraftforge.common.ForgeHooks.onPlayerAttackTarget(player, targetEntity)) return;
@@ -284,4 +290,6 @@ public class BkRangeSword extends BkSword {
             }
         }
     }
+    
+    //endregion
 }

@@ -136,8 +136,6 @@ public class Hammer extends BkPickaxe {
         tooltip.add("Usage " + stack.getItemDamage() + " / " + stack.getMaxDamage());
         tooltip.add("Digging size is "+ _range.width + " by " + _range.height);
         tooltip.add("Efficency is " + efficiencyOnProperMaterial);
-        tooltip.add("Name is " + name);
-        tooltip.add("Unlocolized name is " + getUnlocalizedName());
     }
 
     @Override
