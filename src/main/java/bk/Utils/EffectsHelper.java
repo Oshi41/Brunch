@@ -1,8 +1,11 @@
 package bk.Utils;
 
+import bk.PacketWork.Messages.LightningPacket;
+import bk.Proxy.CommonProxy;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
@@ -50,9 +53,16 @@ public class EffectsHelper {
             EntityLightningBolt entityLightningBolt = new EntityLightningBolt(target.getEntityWorld(),
                     target.posX, target.posY, target.posZ, true);
             target.getEntityWorld().spawnEntity(entityLightningBolt);
-//            target.getEntityWorld().spawnEntity(new EntityLightningBolt(target.getEntityWorld(),
-//                    target.posX, target.posY, target.posZ, true));
-            stack.damageItem(2, player);
+            if (!player.capabilities.isCreativeMode)
+                stack.damageItem(2, player);
+            
+            if (player instanceof EntityPlayerMP){                
+                ((EntityPlayerMP) player).getServerWorld().addScheduledTask(() -> {
+                    for (EntityPlayerMP playerMP : ((EntityPlayerMP) player).getServerWorld().getPlayers(EntityPlayerMP.class,
+                            x -> x.dimension == player.dimension))
+                        CommonProxy.simpleNetworkWrapper.sendTo(new LightningPacket(target.getPositionVector()), playerMP);
+                });
+            }
         }
     }
 

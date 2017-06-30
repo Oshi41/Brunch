@@ -1,9 +1,8 @@
 package bk.Base.Weapons;
 
 import bk.Base.BaseVanilla.BkSword;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.PlayerControllerMP;
-import net.minecraft.client.network.NetHandlerPlayClient;
+import bk.PacketWork.Messages.AttackPacket;
+import bk.Proxy.CommonProxy;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.boss.EntityDragonPart;
@@ -13,9 +12,7 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
-import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.stats.AchievementList;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.DamageSource;
@@ -26,7 +23,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import java.util.List;
 
@@ -56,59 +52,19 @@ public class BkRangeSword extends BkSword {
         if (list.size() == 0) return;
         for (Entity e : list){
             if (((EntityLivingBase) e).getEntityBoundingBox().intersects(start, end)){
-                //Find entity we looking at
+                //Find entities we can hit at
                 attack(player, e);
             }
         }
     }
-//        Vec3d end = player.getPositionVector().add(player.getLookVec().scale(range));
-//        AxisAlignedBB alignedBB = new AxisAlignedBB(player.getPositionVector(), end).expand(1,1,1);
-//
-//        List<Entity> list = worldIn.getEntitiesWithinAABBExcludingEntity(player, alignedBB);
-//
-//        for (Entity entity : list){
-//            if (entity instanceof EntityLivingBase && player.canEntityBeSeen(entity)){
-//                Minecraft.getMinecraft().gameSettings.keyBindAttack.setToDefault();
-//                return;
-//            }
-//        }
-
-//    public void attack(World worldIn, EntityPlayer player){
-//        BkSwordEntity entity = new BkSwordEntity(worldIn, player, range);
-//        worldIn.spawnEntity(entity);
-//    }
-//
-//    @Override
-//    public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) {
-//        return super.onLeftClickEntity(stack, player, entity);
-//    }
-//
-//    @Override
-//    public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-//        //super.onUpdate(stack, worldIn, entityIn, itemSlot, isSelected);
-//        ++ticksSinceLastSwing;
-//    }
-//
     /**
      * Attacks for the player the targeted entity with the currently equipped item.  The equipped item has hitEntity
      * called on it. Args: targetEntity
      */
     public void attack(EntityPlayer player,  Entity targetEntity)
     {
-        MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-        
-        Minecraft minecraft = Minecraft.getMinecraft();
-        PlayerControllerMP controllerMP = minecraft.playerController;
-        controllerMP.updateController();
-        NetHandlerPlayClient connection = minecraft.getConnection();
-        connection.sendPacket(new CPacketUseEntity(targetEntity));
-
-        if (!controllerMP.isSpectator())
-        {
-            attackTask(player, targetEntity);
-            player.resetCooldown();
-        }
-        player.swingArm(EnumHand.MAIN_HAND);
+        attackTask(player, targetEntity);
+        CommonProxy.simpleNetworkWrapper.sendToServer(new AttackPacket((EntityLivingBase) targetEntity));
     }
 
     private void attackTask(EntityPlayer player,  Entity targetEntity){

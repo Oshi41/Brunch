@@ -18,6 +18,7 @@ public class BookCraft {
     @SidedProxy(clientSide = BookCraft.MOD_ID + ".Proxy.ClientProxy",
             serverSide = BookCraft.MOD_ID + ".Proxy.CommonProxy")
     public static CommonProxy proxy;
+    
 
     public final static String MOD_ID = "bk";
 

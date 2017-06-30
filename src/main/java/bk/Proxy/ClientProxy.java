@@ -23,19 +23,16 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void onPreInit(FMLPreInitializationEvent event) {
         super.onPreInit(event);
-        MinecraftForge.EVENT_BUS.register(new EventHook());
+        MinecraftForge.EVENT_BUS.register(new EventHook());       
 
         ItemsInit.init();
     }
 
     @Override
-    public void onInit(FMLInitializationEvent event) {
-        super.onInit(event);
-
-    }
+    public void onInit(FMLInitializationEvent event) { super.onInit(event);   }
 
     @Override
-    public void onPostInit(FMLPostInitializationEvent event) {
+    public void onPostInit(FMLPostInitializationEvent event) { 
         super.onPostInit(event);
     }
 
@@ -44,8 +41,6 @@ public class ClientProxy extends CommonProxy {
         super.onServerStopping(event);
     }
     //endregion
-
-
     @Override
     public void registerItemRenderer(Item item, int meta, String id) {
         ModelResourceLocation location = new ModelResourceLocation(BookCraft.MOD_ID + ":" + id, "inventory");

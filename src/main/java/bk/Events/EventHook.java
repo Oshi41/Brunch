@@ -18,9 +18,4 @@ public class EventHook {
             ((BkRangeSword)itemStack.getItem()).performAttack(event.getWorld(), event.getEntityPlayer());
         }
     }
-
-    @SubscribeEvent
-    public void onInteraction(PlayerInteractEvent event){
-        //event.getEntityPlayer().sendMessage(new TextComponentString("Kek"));
-    }
 }

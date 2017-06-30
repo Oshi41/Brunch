@@ -14,7 +14,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 /**
  * Created by User on 29.06.2017.
  */
-public class ClinetPacketHandler implements IMessageHandler<BasePacket, IMessage> {    
+public class ClientPacketHandler implements IMessageHandler<BasePacket, IMessage> {    
     
     @Override
     public IMessage onMessage(BasePacket message, MessageContext ctx) {

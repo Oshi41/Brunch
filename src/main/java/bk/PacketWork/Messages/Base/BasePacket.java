@@ -12,6 +12,7 @@ public class BasePacket implements IMessage {
     public boolean isValid(){
         return isValide;
     }
+    public void setValide(){ isValide = true;}
     
     // for use by the message handler only
     public BasePacket(){isValide = false;}

@@ -12,9 +12,12 @@ public class AttackPacket extends BasePacket {
     //private EntityTracker tracker;
     private int target;    
     
+    public AttackPacket(){super();}
     
     public AttackPacket(EntityLivingBase target) {
+        super();
         this.target = target.getEntityId();
+        setValide();
     }
     
     @Override

@@ -15,8 +15,11 @@ public class LightningPacket extends BasePacket {
         return pos;
     }
     
+    public LightningPacket(){super();}
+    
     public LightningPacket(Vec3d pos) {
         this.pos = pos;
+        setValide();
     }
     
     @Override
