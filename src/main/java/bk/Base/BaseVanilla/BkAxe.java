@@ -142,9 +142,8 @@ public class BkAxe extends ItemAxe implements IBkBase {
 
             poses.remove();
         }
-        LinkedList<ItemStack> results = Utils.mergeItems(drops);
-
-        return results;
+    
+        return Utils.mergeItems(drops);
         //return drops;
     }
     private int getTreeHeight(World world, BlockPos pos){

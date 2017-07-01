@@ -138,7 +138,7 @@ public class Hammer extends BkPickaxe {
     }
     
     //region Helping enum
-    public static enum Hammers{
+    public enum Hammers{
         BUILDER_HAMMER("BuilderHammer", new Size(2,1), ToolMaterial.STONE),
         LIGHT_HAMMER("LightHammer", new Size(2,2), ToolMaterial.IRON),
         MJÖLLNIR("Mjöllnir", new Size(3,2), ToolMaterial.DIAMOND),

@@ -13,7 +13,7 @@ public class Essense extends BkItem {
         setCreativeTab(BookCraft.mixTab);
     }
     
-    public static enum  Essenses{
+    public enum  Essenses{
         knowledge("knowledge"),
         forgotten("forgotten"),
         wisdom("wisdom"),

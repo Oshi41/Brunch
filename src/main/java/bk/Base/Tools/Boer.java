@@ -57,7 +57,7 @@ public class Boer extends Hammer {
         return super.onBlockDestroyed(stack, worldIn, state, pos, entityLiving);
     }
     
-    public static enum Boers{
+    public enum Boers{
         BASE_DRILL("basedrill", new Size(2,2), ToolMaterial.DIAMOND),
         DEEP_DRILL("deepdrill", new Size(3,4), Materials.Wisdom);
         

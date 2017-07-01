@@ -124,7 +124,7 @@ public class BkMultitool extends ItemTool implements IBkBase {
     }
 
     //region Help enum
-    public static enum Multitools{
+    public enum Multitools{
         DIAMOND("DiamondMultitool", ToolMaterial.DIAMOND),
         FORGOTTEN("ForgottenMultitool", Materials.Forgotten),
         KNOWLEDGE("KnowledgeMultitool", Materials.Knowledge),
