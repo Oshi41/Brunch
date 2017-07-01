@@ -99,7 +99,6 @@ public class Hammer extends BkPickaxe {
     @Override
     public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos, EntityLivingBase entityLiving) {
         if (worldIn.isRemote) return true;
-        //if (_isBreakingNow) return super.onBlockDestroyed(stack, worldIn, state, pos, entityLiving);
 
         if (entityLiving instanceof EntityPlayer){
             if (((EntityPlayer)entityLiving).isSneaking()) return super.onBlockDestroyed(stack, worldIn, state, pos, entityLiving);
@@ -137,12 +136,7 @@ public class Hammer extends BkPickaxe {
         tooltip.add("Digging size is "+ _range.width + " by " + _range.height);
         tooltip.add("Efficency is " + efficiencyOnProperMaterial);
     }
-
-    @Override
-    public int getMetadata(ItemStack stack) {
-        return super.getMetadata(stack);
-    }
-
+    
     //region Helping enum
     public static enum Hammers{
         BUILDER_HAMMER("BuilderHammer", new Size(2,1), ToolMaterial.STONE),
@@ -172,6 +166,8 @@ public class Hammer extends BkPickaxe {
         ArrayList<BlockPos> poses = new ArrayList<BlockPos>();
         BlockPos begin = pos, end = pos;
         RayTraceResult orientation = rayTrace(worldIn, player, false);
+        if (orientation == null) 
+            return new BlockPos[0];
 
 
         int depth = _range.height - 1,

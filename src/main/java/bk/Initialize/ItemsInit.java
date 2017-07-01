@@ -2,10 +2,11 @@ package bk.Initialize;
 
 import bk.Base.BaseVanilla.BkAxe;
 import bk.Base.BaseVanilla.IBkBase;
-import bk.Base.Tools.Boers;
+import bk.Base.Tools.Boer;
 import bk.Base.Tools.Hammer;
 import bk.BookCraft;
-import bk.Items.LavaHammer;
+import bk.Items.Essense;
+import bk.Items.Tools.LavaHammer;
 import bk.Items.Weapons.AngelSword;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
@@ -27,16 +28,23 @@ public class ItemsInit  {
     public static Hammer Mjöllnir;
     public static Hammer WarHammer;
     public static Hammer LegendaryHammer;
-    public static bk.Items.LavaHammer LavaHammer;
+    public static bk.Items.Tools.LavaHammer LavaHammer;
 
     //Swords
     public static AngelSword angelSword;
 
-    //Boers
-    public static Boers boer;
+    //Boer
+    public static Boer basedrill;
+    public static Boer deepdrill;
 
     //Axes
     public static BkAxe axe;
+    
+    //Essenses
+    public static Essense knowledge;
+    public static Essense forgotten;
+    public static Essense wisdom;
+    public static Essense cosmic;
     //endregion
 
     //
@@ -49,6 +57,12 @@ public class ItemsInit  {
         LegendaryHammer = register(new Hammer(Hammer.Hammers.LEGENDARY_HAMMER));
         LavaHammer = register(new LavaHammer());
         angelSword = register(new AngelSword());
+        knowledge = register(new Essense(Essense.Essenses.knowledge));
+        forgotten = register(new Essense(Essense.Essenses.forgotten));
+        wisdom = register(new Essense(Essense.Essenses.wisdom));
+        cosmic = register(new Essense(Essense.Essenses.cosmic));
+        basedrill = register(new Boer(Boer.Boers.BASE_DRILL));
+        deepdrill = register(new Boer(Boer.Boers.DEEP_DRILL));
     }
 
     //region Helping Method

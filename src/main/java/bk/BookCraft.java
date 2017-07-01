@@ -1,5 +1,6 @@
 package bk;
 
+import bk.Initialize.ItemsInit;
 import bk.Proxy.CommonProxy;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
@@ -29,19 +30,26 @@ public class BookCraft {
     public static final CreativeTabs toolTab = new CreativeTabs("Tools") {
         @Override
         public ItemStack getTabIconItem() {
-            return new ItemStack(Items.IRON_PICKAXE);
+            return new ItemStack(ItemsInit.Mjöllnir);
         }
     };
     public static final CreativeTabs swordsTab = new CreativeTabs("Melee weapon") {
         @Override
         public ItemStack getTabIconItem() {
-            return new ItemStack(Items.IRON_SWORD);
+            return new ItemStack(ItemsInit.angelSword);
         }
     };
-    public static final CreativeTabs rangedTabs = new CreativeTabs("Ranged weapon") {
+    public static final CreativeTabs rangedTab = new CreativeTabs("Ranged weapon") {
         @Override
         public ItemStack getTabIconItem() {
             return new ItemStack(Items.BOW);
+        }
+    };
+    
+    public static final CreativeTabs mixTab = new CreativeTabs("Stuff") {
+        @Override
+        public ItemStack getTabIconItem() {
+            return new ItemStack(ItemsInit.cosmic);
         }
     };
     //endregion

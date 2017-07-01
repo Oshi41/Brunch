@@ -1,5 +1,5 @@
 {
-  "parent": "item/handheld",
+  "parent": "bk:item/base/basehammer",
   "textures": {
     "layer0": "bk:items/hammer2"
   }

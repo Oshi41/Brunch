@@ -1,6 +1,6 @@
 {
-  "parent": "item/handheld",
+  "parent": "bk:item/base/basehammer",
   "textures": {
-    "layer0": "tm:items/Hammer5"
+    "layer0": "bk:items/hammer6"
   }
 }

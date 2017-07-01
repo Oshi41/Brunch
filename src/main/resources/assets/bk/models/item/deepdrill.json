@@ -1,0 +1,6 @@
+{
+	"parent": "bk:item/base/basehammer",
+	"textures": {
+		"layer0": "bk:items/deepdrill"
+	}
+}
