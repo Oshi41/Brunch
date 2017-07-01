@@ -29,8 +29,7 @@ public class Boer extends Hammer {
     }
     
     @Override
-    public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos, EntityLivingBase
-            entityLiving) {
+    public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos, EntityLivingBase entityLiving) {
         if (worldIn.isRemote) return true;
     
         if (entityLiving instanceof EntityPlayer) {

@@ -163,12 +163,11 @@ public class Hammer extends BkPickaxe {
 
     //region Helping methods
     public BlockPos[] getBlockRange(World worldIn, BlockPos pos, EntityPlayer player){
+        if (worldIn.isRemote) return new BlockPos[0];
+        
         ArrayList<BlockPos> poses = new ArrayList<BlockPos>();
         BlockPos begin = pos, end = pos;
-        RayTraceResult orientation = rayTrace(worldIn, player, false);
-        if (orientation == null) 
-            return new BlockPos[0];
-
+        RayTraceResult orientation = rayTrace(worldIn, player, false);    
 
         int depth = _range.height - 1,
                 maxY = (_range.width - 1) / 2,
