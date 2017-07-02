@@ -2,6 +2,7 @@ package bk.Proxy;
 
 import bk.BookCraft;
 import bk.Events.EventHook;
+import bk.Initialize.BlocksInit;
 import bk.Initialize.ItemsInit;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
@@ -26,6 +27,7 @@ public class ClientProxy extends CommonProxy {
         MinecraftForge.EVENT_BUS.register(new EventHook());       
 
         ItemsInit.init();
+        BlocksInit.init();
     }
 
     @Override

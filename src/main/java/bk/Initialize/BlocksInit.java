@@ -1,7 +1,7 @@
 package bk.Initialize;
 
-import bk.Base.BaseVanilla.BkBlock;
 import bk.Base.BaseVanilla.IBkBase;
+import bk.Blocks.UltimateChest;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -12,10 +12,11 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class BlocksInit  {
 
     //region Fields
+    public static UltimateChest ultimateChest;
     //endregion
 
     public static void init(){
-
+        ultimateChest = register(new UltimateChest());
     }
 
     //region Helping Methods
@@ -28,8 +29,7 @@ public class BlocksInit  {
             itemBlock = ItemsInit.registerWithSubtypes(itemBlock);
         }
         if (block instanceof IBkBase) {
-//            BookCraft.proxy.registerItemRenderer(itemBlock, 0, itemBlock.getUnlocalizedNameInefficiently());
-            ((BkBlock)block).registerItemModel(itemBlock);
+            ((IBkBase)block).registerItemModel();
         }
 
         return block;

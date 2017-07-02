@@ -1,10 +1,14 @@
 package bk.Proxy;
 
+import bk.BookCraft;
+import bk.Gui.GuiHandler;
+import bk.Gui.TileEntity.UnlimitedTileEntity;
 import bk.Initialize.PacketRegistry;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -21,8 +25,10 @@ public class CommonProxy {
         
     }
     
-    public void onPreInit(FMLPreInitializationEvent event) {
+    public void onPreInit(FMLPreInitializationEvent event) {        
         PacketRegistry.init(simpleNetworkWrapper);
+        GameRegistry.registerTileEntity(UnlimitedTileEntity.class, "UnlimitedTileEntity");
+        NetworkRegistry.INSTANCE.registerGuiHandler(BookCraft.instance, GuiHandler.getInstance());
     }
     
     public void onInit(FMLInitializationEvent event) {

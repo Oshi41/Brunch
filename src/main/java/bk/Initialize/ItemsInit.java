@@ -6,6 +6,7 @@ import bk.Base.Tools.Boer;
 import bk.Base.Tools.Hammer;
 import bk.BookCraft;
 import bk.Items.Essense;
+import bk.Items.Magnet;
 import bk.Items.Tools.LavaHammer;
 import bk.Items.Weapons.AngelSword;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -45,6 +46,8 @@ public class ItemsInit  {
     public static Essense forgotten;
     public static Essense wisdom;
     public static Essense cosmic;
+    
+    public static Magnet magnet;
     //endregion
 
     //
@@ -63,6 +66,7 @@ public class ItemsInit  {
         cosmic = register(new Essense(Essense.Essenses.cosmic));
         basedrill = register(new Boer(Boer.Boers.BASE_DRILL));
         deepdrill = register(new Boer(Boer.Boers.DEEP_DRILL));
+        magnet = register(new Magnet(5, true));
     }
 
     //region Helping Method

@@ -33,7 +33,8 @@ public class Utils {
             //Find the same item
             if (results.stream().anyMatch(x -> stacks.get(finalI).isItemEqual(x))){
                 for (int j = 0; j < results.size(); j++){
-                    if (results.get(j).isItemEqual(stacks.get(i)) && results.get(j).getMetadata() == stacks.get(i).getMetadata()){
+                    if (results.get(j).isItemEqual(stacks.get(i)) && 
+                            ItemStack.areItemStackTagsEqual(results.get(j), stacks.get(i))){
                         results.get(j).grow(stacks.get(i).getCount());
                         break;
                     }
