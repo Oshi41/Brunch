@@ -5,9 +5,7 @@ import bk.Gui.TileEntity.UnlimitedTileEntity;
 import com.google.common.collect.Sets;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ClickType;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.*;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -16,12 +14,13 @@ import java.util.Set;
 /**
  * Created by User on 02.07.2017.
  */
-public class UnlimitedContainer extends Container {
+public class UnlimitedContainer extends Container implements IInventoryChangedListener {
     
     private UnlimitedTileEntity tileEntity;
     private int dragEvent1;
     private int dragMode1;
     private Set<Slot> dragSlots1 = Sets.newHashSet();
+    private boolean isMeging = false;
     
     //region Drawing poses
     private int size = 16;
@@ -43,6 +42,7 @@ public class UnlimitedContainer extends Container {
     public UnlimitedContainer(InventoryPlayer invPlayer, UnlimitedTileEntity tileEntity){
     
         this.tileEntity = tileEntity;
+        tileEntity.addInventoryChangeListener(this);
         for (int chestRow = 0; chestRow < numRows; chestRow++) {
             for (int chestCol = 0; chestCol < numCols; chestCol++) {
                 addSlotToContainer(new UnlimitedSlot(tileEntity, chestCol + chestRow * numCols, 12 + 
@@ -67,12 +67,12 @@ public class UnlimitedContainer extends Container {
     
     @Override
     public boolean canInteractWith(EntityPlayer playerIn) {
-        return true;
+        return tileEntity.getPos().distanceSq(playerIn.chasingPosX, playerIn.chasingPosY, playerIn.chasingPosZ) < 25;
     }
     
     @Override
     public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {            
-        Slot slot = (Slot) this.inventorySlots.get(index);
+        Slot slot = this.inventorySlots.get(index);
         if (slot == null || !slot.getHasStack()) return ItemStack.EMPTY;
         
         ItemStack itemstack = slot.getStack();
@@ -80,7 +80,7 @@ public class UnlimitedContainer extends Container {
         //Unlimited slots
         if (index < numCols * numRows){
             //Transfer unlimited amount of items            
-            if (super.mergeItemStack(itemstack, numCols * numRows,
+            if (!super.mergeItemStack(itemstack, numCols * numRows,
                     this.inventorySlots.size(), true)) {
                 return ItemStack.EMPTY;
             }
@@ -224,7 +224,7 @@ public class UnlimitedContainer extends Container {
                 }
             }
             else if (this.dragEvent1 == 1) {
-                Slot slot = (Slot) this.inventorySlots.get(slotId);
+                Slot slot = this.inventorySlots.get(slotId);
                 ItemStack itemstack1 = inventoryplayer.getItemStack();
             
                 if (slot != null && canAddItemToSlot(slot, itemstack1, true) && slot.isItemValid(itemstack1) && (this.dragMode1 == 2 || itemstack1.getCount() > this.dragSlots1.size()) && this.canDragIntoSlot(slot)) {
@@ -285,7 +285,7 @@ public class UnlimitedContainer extends Container {
                     return ItemStack.EMPTY;
                 }
             
-                Slot slot6 = (Slot) this.inventorySlots.get(slotId);
+                Slot slot6 = this.inventorySlots.get(slotId);
             
                 if (slot6 != null && slot6.canTakeStack(player)) {
                     ItemStack itemstack10 = this.transferStackInSlot(player, slotId);
@@ -305,7 +305,7 @@ public class UnlimitedContainer extends Container {
                     return ItemStack.EMPTY;
                 }
             
-                Slot slot7 = (Slot) this.inventorySlots.get(slotId);
+                Slot slot7 = this.inventorySlots.get(slotId);
             
                 if (slot7 != null) {
                     ItemStack itemstack11 = slot7.getStack();
@@ -430,7 +430,7 @@ public class UnlimitedContainer extends Container {
             }
         }
         else if (clickTypeIn == ClickType.CLONE && player.capabilities.isCreativeMode && inventoryplayer.getItemStack().isEmpty() && slotId >= 0) {
-            Slot slot4 = (Slot) this.inventorySlots.get(slotId);
+            Slot slot4 = this.inventorySlots.get(slotId);
         
             if (slot4 != null && slot4.getHasStack()) {
                 ItemStack itemstack8 = slot4.getStack().copy();
@@ -439,7 +439,7 @@ public class UnlimitedContainer extends Container {
             }
         }
         else if (clickTypeIn == ClickType.THROW && inventoryplayer.getItemStack().isEmpty() && slotId >= 0) {
-            Slot slot3 = (Slot) this.inventorySlots.get(slotId);
+            Slot slot3 = this.inventorySlots.get(slotId);
         
             if (slot3 != null && slot3.getHasStack() && slot3.canTakeStack(player)) {
                 ItemStack itemstack7 = slot3.decrStackSize(dragType == 0 ? 1 : slot3.getStack().getCount());
@@ -448,7 +448,7 @@ public class UnlimitedContainer extends Container {
             }
         }
         else if (clickTypeIn == ClickType.PICKUP_ALL && slotId >= 0) {
-            Slot slot2 = (Slot) this.inventorySlots.get(slotId);
+            Slot slot2 = this.inventorySlots.get(slotId);
             ItemStack itemstack6 = inventoryplayer.getItemStack();
         
             if (!itemstack6.isEmpty() && (slot2 == null || !slot2.getHasStack() || !slot2.canTakeStack(player))) {
@@ -482,8 +482,7 @@ public class UnlimitedContainer extends Container {
         }
     
         return itemstack;
-    }    
-    
+    }   
     @Override
     protected void resetDrag(){
         this.dragEvent1 = 0;
@@ -501,13 +500,32 @@ public class UnlimitedContainer extends Container {
                 //If find equal
                 if (stack.getItem() == toMerge.getItem() && stack.getMetadata() ==
                         toMerge.getMetadata() && ItemStack.areItemStackTagsEqual(stack, toMerge)) {
-                    int increaseSize = slot.getSlotStackLimit() - stack.getCount();
+                    int increaseSize = toMerge.getCount();
+                    if (slot.getSlotStackLimit() - stack.getCount() < increaseSize)
+                        increaseSize -= slot.getSlotStackLimit() - stack.getCount();
                     stack.grow(increaseSize);
                     toMerge.shrink(increaseSize);
+                    //slot.onSlotChanged();
                 }
         
             }
         }
     }
+    
+    @Override
+    public void onInventoryChanged(IInventory invBasic) {
+        if (isMeging) return;
+    
+        isMeging = true;
+        mergeContent();
+        invBasic.markDirty();
+        isMeging = false;
+    }
+    
+    @Override
+    public void detectAndSendChanges() {
+        super.detectAndSendChanges();
+    }
+    
     
 }

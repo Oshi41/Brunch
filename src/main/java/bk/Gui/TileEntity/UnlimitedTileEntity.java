@@ -1,7 +1,10 @@
 package bk.Gui.TileEntity;
 
+import bk.Gui.Container.UnlimitedContainer;
 import com.google.common.collect.Lists;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.IInventoryChangedListener;
 import net.minecraft.inventory.ItemStackHelper;
@@ -12,13 +15,14 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.IInteractionObject;
 
 import java.util.List;
 
 /**
  * Created by User on 02.07.2017.
  */
-public class UnlimitedTileEntity extends TileEntity implements IInventory {
+public class UnlimitedTileEntity extends TileEntity implements IInventory, IInteractionObject {
     
     private boolean hasCustomName;
     private String inventoryTitle;
@@ -160,14 +164,6 @@ public class UnlimitedTileEntity extends TileEntity implements IInventory {
         return this.hasCustomName;
     }
     
-//    /**
-//     * Sets the name of this inventory. This is displayed to the client on opening.
-//     */
-//    public void setCustomName(String inventoryTitleIn) {
-//        this.hasCustomName = true;
-//        this.inventoryTitle = inventoryTitleIn;
-//    }
-    
     /**
      * Get the formatted ChatComponent that will be used for the sender's username in chat
      */
@@ -191,7 +187,7 @@ public class UnlimitedTileEntity extends TileEntity implements IInventory {
             for (int i = 0; i < this.changeListeners.size(); ++i) {
                 ((IInventoryChangedListener) this.changeListeners.get(i)).onInventoryChanged(this);
             }
-        }
+        }        
     }
     
     /**
@@ -250,28 +246,43 @@ public class UnlimitedTileEntity extends TileEntity implements IInventory {
     
     @Override
     public void readFromNBT(NBTTagCompound compound) {
-    
-        for (int i = 0; i < inventoryContents.size(); i++) {
-            if (compound.hasKey("slot" + i)){
-                NBTTagCompound compound1 = compound.getCompoundTag("slot" + i);
-                ItemStack stack = ItemStack.EMPTY;
-                stack.deserializeNBT(compound);
-                inventoryContents.set(i, stack);
-            }
-        }
         super.readFromNBT(compound);
+        
+        ItemStackHelper.loadAllItems(compound, inventoryContents);
+//        for (int i = 0; i < inventoryContents.size(); i++) {
+//            if (compound.hasKey("slot" + i)){
+//                NBTTagCompound compound1 = compound.getCompoundTag("slot" + i);
+//                ItemStack stack = ItemStack.EMPTY;
+//                stack.deserializeNBT(compound1);
+//                inventoryContents.set(i, stack);
+//            }
+//        }
     }
     
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+        super.writeToNBT(compound);
         
-        for (int i = 0; i < inventoryContents.size(); i++) {
-            if (!inventoryContents.get(i).isEmpty())
-                compound.setTag("slot" + i, inventoryContents.get(i).serializeNBT());
-        }
-        return super.writeToNBT(compound);
+        ItemStackHelper.saveAllItems(compound, inventoryContents);
+//        for (int i = 0; i < inventoryContents.size(); i++) {
+//            if (!inventoryContents.get(i).isEmpty())
+//                compound.setTag("slot" + i, inventoryContents.get(i).serializeNBT());
+//        }
+        
+        return compound;
     }
     
+    @Override
+    public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn) {
+        return new UnlimitedContainer(playerInventory, this);
+    }
+    
+    @Override
+    public String getGuiID() {
+        return "bookcraft:unlimitedchest";
+    }
+
+
 //    @Override
 //    public void onInventoryChanged(IInventory invBasic) {
 //        LinkedList<ItemStack> sortedItems = Utils.mergeItems(new LinkedList<>(inventoryContents));
