@@ -7,6 +7,7 @@ import bk.Base.Tools.Hammer;
 import bk.BookCraft;
 import bk.Items.Essense;
 import bk.Items.Magnet;
+import bk.Items.PotionJar;
 import bk.Items.Tools.LavaHammer;
 import bk.Items.Weapons.AngelSword;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -47,7 +48,10 @@ public class ItemsInit  {
     public static Essense wisdom;
     public static Essense cosmic;
     
+    
     public static Magnet magnet;
+    
+    public static PotionJar potionJar;
     //endregion
 
     //
@@ -67,6 +71,7 @@ public class ItemsInit  {
         basedrill = register(new Boer(Boer.Boers.BASE_DRILL));
         deepdrill = register(new Boer(Boer.Boers.DEEP_DRILL));
         magnet = register(new Magnet(5, true));
+        potionJar = register(new PotionJar());
     }
 
     //region Helping Method

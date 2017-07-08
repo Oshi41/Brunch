@@ -30,6 +30,7 @@ public class Magnet extends BkItem {
     
     public Magnet(float range, boolean onlyMainInventory) {
         super("magnet");
+        setMaxStackSize(1);
         setMaxDamage(Integer.MAX_VALUE);
         setCreativeTab(BookCraft.mixTab);
         this.range = range;

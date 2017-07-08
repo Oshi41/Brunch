@@ -25,6 +25,7 @@ public class UniversalGuiContainer extends GuiContainer {
         width = type.width;
         height = type.height;
         return this;
+        
     }
     
     @Override
@@ -49,4 +50,9 @@ public class UniversalGuiContainer extends GuiContainer {
             this.height = height;
         } 
     }
+    
+    
+    //region Boldly stolen methods
+    
+    //endregion
 }
