@@ -2,7 +2,6 @@ package bk.Initialize;
 
 import bk.Base.BaseVanilla.IBkBase;
 import bk.Blocks.SingularityChest;
-import bk.Blocks.UltimateChest;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -13,12 +12,12 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class BlocksInit  {
 
     //region Fields
-    public static UltimateChest ultimateChest;
+    //public static UltimateChest ultimateChest;
     public static SingularityChest singularityChest;
     //endregion
 
     public static void init(){
-        ultimateChest = register(new UltimateChest());
+        //ultimateChest = register(new UltimateChest());
         singularityChest = register(new SingularityChest());
     }
 

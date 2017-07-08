@@ -2,7 +2,6 @@ package bk.Gui;
 
 import bk.Gui.GuiContainer.UniversalGuiContainer;
 import bk.Gui.TileEntity.SingularityTileEntity;
-import bk.Gui.TileEntity.UnlimitedTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;
@@ -35,10 +34,10 @@ public class GuiHandler implements IGuiHandler {
     
     
         switch (ID){
-            case UltimateGUIId:
-                if (tileEntity instanceof UnlimitedTileEntity) {
-                    return container;
-                }
+//            case UltimateGUIId:
+//                if (tileEntity instanceof UnlimitedTileEntity) {
+//                    return container;
+//                }
                 
             case SingularityGUIId:
                 if (tileEntity instanceof SingularityTileEntity){
@@ -57,11 +56,11 @@ public class GuiHandler implements IGuiHandler {
         Container container = ((IInteractionObject) tileEntity).createContainer(player.inventory, player);
     
         switch (ID){
-            case UltimateGUIId:
-                if (tileEntity instanceof UnlimitedTileEntity) {
-                    return new UniversalGuiContainer(container).
-                            customize(UniversalGuiContainer.GUITypes.SINGULARITY);
-                }
+//            case UltimateGUIId:
+//                if (tileEntity instanceof UnlimitedTileEntity) {
+//                    return new UniversalGuiContainer(container).
+//                            customize(UniversalGuiContainer.GUITypes.SINGULARITY);
+//                }
             case SingularityGUIId:
                 if (tileEntity instanceof SingularityTileEntity){
                     return new UniversalGuiContainer(container).

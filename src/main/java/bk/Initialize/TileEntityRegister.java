@@ -1,7 +1,6 @@
 package bk.Initialize;
 
 import bk.Gui.TileEntity.SingularityTileEntity;
-import bk.Gui.TileEntity.UnlimitedTileEntity;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 /**
@@ -10,7 +9,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class TileEntityRegister {
     
     public static void init(){
-        GameRegistry.registerTileEntity(UnlimitedTileEntity.class, "UnlimitedTileEntity");
+        //GameRegistry.registerTileEntity(UnlimitedTileEntity.class, "UnlimitedTileEntity");
         GameRegistry.registerTileEntity(SingularityTileEntity.class,"bk:SingularityTileEntity");
     }
 }

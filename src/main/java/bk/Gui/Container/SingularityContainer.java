@@ -1,11 +1,13 @@
 package bk.Gui.Container;
 
-import bk.Base.IListenableInventory;
 import bk.Gui.Slot.UnlimitedSlot;
 import com.google.common.collect.Sets;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.*;
+import net.minecraft.inventory.ClickType;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -14,13 +16,13 @@ import java.util.Set;
 /**
  * Created by User on 07.07.2017.
  */
-public class SingularityContainer extends Container implements IInventoryChangedListener {
+public class SingularityContainer extends Container {
     
     public final IInventory inventory;
     private int dragEvent1;
     private int dragMode1;
     private Set<Slot> dragSlots1 = Sets.newHashSet();
-    private boolean isMeging = false;
+    //private boolean isMeging = false;
     
     //region Drawing poses
     private int size = 16;
@@ -40,8 +42,8 @@ public class SingularityContainer extends Container implements IInventoryChanged
     public SingularityContainer(IInventory tileEntity, EntityPlayer player){
         this.inventory = tileEntity;
         tileEntity.openInventory(player);
-        if (tileEntity instanceof IListenableInventory)
-            ((IListenableInventory) tileEntity).addInventoryChangeListener(this);
+//        if (tileEntity instanceof IListenableInventory)
+//            ((IListenableInventory) tileEntity).addInventoryChangeListener(this);
     
         for (int chestRow = 0; chestRow < numRows; chestRow++) {
             for (int chestCol = 0; chestCol < numCols; chestCol++) {
@@ -72,8 +74,8 @@ public class SingularityContainer extends Container implements IInventoryChanged
     
     @Override
     public void onContainerClosed(EntityPlayer playerIn) {
-        if (inventory instanceof IListenableInventory)
-            ((IListenableInventory) inventory).removeInventoryChangeListener(this);
+//        if (inventory instanceof IListenableInventory)
+//            ((IListenableInventory) inventory).removeInventoryChangeListener(this);
         super.onContainerClosed(playerIn);
         this.inventory.closeInventory(playerIn);
     }
@@ -512,15 +514,15 @@ public class SingularityContainer extends Container implements IInventoryChanged
         return itemstack;
     }
     
-    @Override
-    public void onInventoryChanged(IInventory invBasic) {
-        if (isMeging) return;
-        
-        isMeging = true;
-        mergeContent();
-        invBasic.markDirty();
-        isMeging = false;
-    }
+//    @Override
+//    public void onInventoryChanged(IInventory invBasic) {
+//        if (isMeging) return;
+//        
+//        isMeging = true;
+//        mergeContent();
+//        invBasic.markDirty();
+//        isMeging = false;
+//    }
     
     //endregion
     
@@ -531,28 +533,28 @@ public class SingularityContainer extends Container implements IInventoryChanged
         this.dragSlots1.clear();
     }
     
-    /**
-     * Trying to merge itemStacks into one large
-     */
-    public void mergeContent() {        
-        for (int i = 0; i < numRows * numCols - 1; i++) {
-            Slot slot = this.inventorySlots.get(i);
-            if (slot == null || slot.getStack().isEmpty()) continue;
-            ItemStack stack = slot.getStack();
-            
-            for (int j = i + 1; j < numRows * numCols - 1; j++) {
-                ItemStack toMerge = this.inventorySlots.get(j).getStack();
-                //If find equal
-                if (stack.getItem() == toMerge.getItem() && stack.getMetadata() ==
-                        toMerge.getMetadata() && ItemStack.areItemStackTagsEqual(stack, toMerge)) {
-                    int increaseSize = toMerge.getCount();
-                    if (slot.getSlotStackLimit() - stack.getCount() < increaseSize)
-                        increaseSize -= slot.getSlotStackLimit() - stack.getCount();
-                    stack.grow(increaseSize);
-                    toMerge.shrink(increaseSize);
-                }
-            }
-        }
-    }
+//    /**
+//     * Trying to merge itemStacks into one large
+//     */
+//    public void mergeContent() {        
+//        for (int i = 0; i < numRows * numCols - 1; i++) {
+//            Slot slot = this.inventorySlots.get(i);
+//            if (slot == null || slot.getStack().isEmpty()) continue;
+//            ItemStack stack = slot.getStack();
+//            
+//            for (int j = i + 1; j < numRows * numCols - 1; j++) {
+//                ItemStack toMerge = this.inventorySlots.get(j).getStack();
+//                //If find equal
+//                if (stack.getItem() == toMerge.getItem() && stack.getMetadata() ==
+//                        toMerge.getMetadata() && ItemStack.areItemStackTagsEqual(stack, toMerge)) {
+//                    int increaseSize = toMerge.getCount();
+//                    if (slot.getSlotStackLimit() - stack.getCount() < increaseSize)
+//                        increaseSize -= slot.getSlotStackLimit() - stack.getCount();
+//                    stack.grow(increaseSize);
+//                    toMerge.shrink(increaseSize);
+//                }
+//            }
+//        }
+//    }
     //endregion
 }
