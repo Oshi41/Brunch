@@ -1,6 +1,7 @@
 package bk.Initialize;
 
 import bk.Base.BaseVanilla.IBkBase;
+import bk.Blocks.SingularityChest;
 import bk.Blocks.UltimateChest;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
@@ -13,10 +14,12 @@ public class BlocksInit  {
 
     //region Fields
     public static UltimateChest ultimateChest;
+    public static SingularityChest singularityChest;
     //endregion
 
     public static void init(){
         ultimateChest = register(new UltimateChest());
+        singularityChest = register(new SingularityChest());
     }
 
     //region Helping Methods
