@@ -2,13 +2,13 @@ package bk.Gui.TileEntity;
 
 import bk.Base.IListenableInventory;
 import bk.Gui.Container.SingularityContainer;
+import bk.Utils.Utils;
 import com.google.common.collect.Lists;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.IInventoryChangedListener;
-import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -28,15 +28,18 @@ public class SingularityTileEntity extends TileEntity implements IInventory, IIn
     private NonNullList<ItemStack> inventoryContents;
     private List<IInventoryChangedListener> changeListeners;
     
+    //Just need, do not delete!!!
+    public SingularityTileEntity(){this(Types.SINGULARITY);}
+    
+    
     public SingularityTileEntity(Types type){
         this(type.name, type.hasCustomName, type.slotCount);
     }
     public SingularityTileEntity(String title, boolean customName, int slotCount) {
-        super();
         this.slotsCount = slotCount;
         this.inventoryTitle = title;
         this.hasCustomName = customName;
-        this.inventoryContents = NonNullList.<ItemStack>withSize(slotCount, ItemStack.EMPTY);
+        this.inventoryContents = NonNullList.withSize(slotCount, ItemStack.EMPTY);
     }
     
     @Override
@@ -59,9 +62,10 @@ public class SingularityTileEntity extends TileEntity implements IInventory, IIn
     public ItemStack decrStackSize(int index, int count) {
         ItemStack stack = getStackInSlot(index);
         if (stack.isEmpty()) return ItemStack.EMPTY;
-    
-        this.markDirty();
-        return splitStack(stack, count);
+            
+        ItemStack tReturn =  splitStack(stack, count);
+        super.markDirty();
+        return tReturn;
     }
     
     @Override
@@ -75,7 +79,8 @@ public class SingularityTileEntity extends TileEntity implements IInventory, IIn
         if (checkBounds(index)) return;
         
         inventoryContents.set(index, stack);
-        this.markDirty();
+        inventoryContents = Utils.mergeItems(inventoryContents);
+        super.markDirty();
     }
     
     @Override
@@ -147,13 +152,13 @@ public class SingularityTileEntity extends TileEntity implements IInventory, IIn
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
         this.inventoryContents = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
-        ItemStackHelper.loadAllItems(compound, inventoryContents);
+        Utils.loadAllItems(compound, inventoryContents);
     }
     
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {        
-        super.writeToNBT(compound);        
-        ItemStackHelper.saveAllItems(compound, inventoryContents);
+        super.writeToNBT(compound);
+        Utils.saveAllItems(compound, inventoryContents);
         return compound;
     }
     
@@ -191,6 +196,7 @@ public class SingularityTileEntity extends TileEntity implements IInventory, IIn
     public void removeInventoryChangeListener(IInventoryChangedListener listener) {
         this.changeListeners.remove(listener);
     }
+    
     //endregion
     
     public enum Types {

@@ -22,10 +22,12 @@ import javax.annotation.Nullable;
  */
 public class SingularityChest extends BlockContainer {    
     
+    public static final String name = "singularitychest";
+    
     public SingularityChest() {
         super(Material.ROCK);
-        setRegistryName("singularitychest");
-        setUnlocalizedName("singularitychest");
+        setRegistryName(name);
+        setUnlocalizedName(name);
         setCreativeTab(BookCraft.mixTab);
     }
     

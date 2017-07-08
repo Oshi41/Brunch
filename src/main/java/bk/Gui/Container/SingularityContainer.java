@@ -77,9 +77,7 @@ public class SingularityContainer extends Container implements IInventoryChanged
         super.onContainerClosed(playerIn);
         this.inventory.closeInventory(playerIn);
     }
-    
-    
-    
+        
     //region Boldly stolen and overriden Methods
     
     /**

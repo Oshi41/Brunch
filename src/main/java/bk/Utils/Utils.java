@@ -5,6 +5,9 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
@@ -46,6 +49,17 @@ public class Utils {
         return results;
     }
     
+    public static NonNullList<ItemStack> mergeItems(NonNullList<ItemStack> source){
+        LinkedList<ItemStack> items = mergeItems(new LinkedList<>(source));
+        NonNullList<ItemStack> toReturn = NonNullList.withSize(source.size(), ItemStack.EMPTY);
+        int min = Math.min(items.size(), toReturn.size());
+        for (int i = 0; i < min; i++){
+            toReturn.set(i, items.get(i));
+        }
+        
+        return toReturn;
+    }
+    
     /**
      * Destroy whole area with given positions and return unsorted array of items
      * For sorting use {@link Utils#mergeItems(LinkedList)}
@@ -73,4 +87,63 @@ public class Utils {
         
         return result;
     }
+    
+    
+    //region NBT HELPER
+    
+    /**
+     * Override it to write correct stack size
+     *
+     * @param tag
+     * @param list
+     * @return
+     */
+    public static NBTTagCompound saveAllItems(NBTTagCompound tag, NonNullList<ItemStack> list) {
+        NBTTagList nbttaglist = new NBTTagList();
+        
+        for (int i = 0; i < list.size(); ++i) {
+            ItemStack itemstack = list.get(i);
+            
+            if (!itemstack.isEmpty()) {
+                NBTTagCompound nbttagcompound = new NBTTagCompound();
+                nbttagcompound.setByte("Slot", (byte) i);
+                itemstack.writeToNBT(nbttagcompound);
+                writeStackCount(nbttagcompound, itemstack);
+                nbttaglist.appendTag(nbttagcompound);
+            }
+        }
+        
+        if (!nbttaglist.hasNoTags()) {
+            tag.setTag("Items", nbttaglist);
+        }
+        
+        return tag;
+    }
+    
+    /**
+     * Replace old tag with integer value to write correct stack size.
+     */
+    public static void writeStackCount(NBTTagCompound tagCompound, ItemStack stack) {
+        if (tagCompound.hasNoTags() || !tagCompound.hasKey("Count")) return;
+        
+        tagCompound.removeTag("Count");
+        tagCompound.setInteger("Count", stack.getCount());
+    }
+    
+    public static void loadAllItems(NBTTagCompound tag, NonNullList<ItemStack> list) {
+        NBTTagList nbttaglist = tag.getTagList("Items", 10);
+        
+        for (int i = 0; i < nbttaglist.tagCount(); ++i) {
+            NBTTagCompound nbttagcompound = nbttaglist.getCompoundTagAt(i);
+            int j = nbttagcompound.getByte("Slot") & 255;
+            
+            if (j >= 0 && j < list.size()) {
+                ItemStack stack = new ItemStack(nbttagcompound);
+                stack.setCount(nbttagcompound.getInteger("Count"));
+                list.set(j, stack);
+            }
+        }
+    }
+    
+    //endregion
 }
