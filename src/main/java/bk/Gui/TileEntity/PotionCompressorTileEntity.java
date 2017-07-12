@@ -1,18 +1,24 @@
 package bk.Gui.TileEntity;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
+import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionUtils;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 
 /**
  * Created by User on 08.07.2017.
  */
-public class PotionCompressorTileEntity extends TileEntity implements IInventory {
+public class PotionCompressorTileEntity extends TileEntity implements IInventory, ITickable {
     
     private NonNullList<ItemStack> inventoryContents;
+    private int cookTime;
     
     @Override
     public int getSizeInventory() {
@@ -78,7 +84,16 @@ public class PotionCompressorTileEntity extends TileEntity implements IInventory
         // 0 - reagent
         // 1,2 - buckets
         // 3 - fuel
-        return true;
+        // 4 -
+        if (index == 0)
+            //TODO make upgrade
+            return stack.getItem() == Items.DIAMOND;
+        if (index < 3)
+            return stack.getItem() == Items.WATER_BUCKET;
+        if (index == 3)
+            return TileEntityFurnace.isItemFuel(stack);
+        //Can put EVERYTHING that can be
+        return stack.getItemUseAction() == EnumAction.DRINK && PotionUtils.getEffectsFromStack(stack).size() > 0;
     }
     
     @Override
@@ -111,7 +126,18 @@ public class PotionCompressorTileEntity extends TileEntity implements IInventory
         return false;
     }
     
+    @Override
+    public void update() {
+        
+    }
+    
+    
     private boolean checkBounds(int i) {
         return 0 > i || i >= inventoryContents.size();
     }
+    
+    public boolean isCooking(){
+        return cookTime > 0;
+    }
+    
 }

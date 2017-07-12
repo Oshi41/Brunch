@@ -9,6 +9,7 @@ import bk.Items.Essense;
 import bk.Items.Magnet;
 import bk.Items.PotionJar;
 import bk.Items.Tools.LavaHammer;
+import bk.Items.UpgradeItem;
 import bk.Items.Weapons.AngelSword;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
@@ -52,6 +53,8 @@ public class ItemsInit  {
     public static Magnet magnet;
     
     public static PotionJar potionJar;
+    
+    public static UpgradeItem upgradeItem;
     //endregion
 
     //
@@ -72,6 +75,7 @@ public class ItemsInit  {
         deepdrill = register(new Boer(Boer.Boers.DEEP_DRILL));
         magnet = register(new Magnet(5, true));
         potionJar = register(new PotionJar());
+        upgradeItem = register(new UpgradeItem());
     }
 
     //region Helping Method

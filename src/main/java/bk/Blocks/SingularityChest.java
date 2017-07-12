@@ -34,7 +34,7 @@ public class SingularityChest extends BlockContainer {
     @Nullable
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new SingularityTileEntity(SingularityTileEntity.Types.SINGULARITY);
+        return new SingularityTileEntity();
     }
     
     @Override

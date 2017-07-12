@@ -3,6 +3,7 @@ package bk.Proxy;
 import bk.BookCraft;
 import bk.Gui.GuiHandler;
 import bk.Initialize.PacketRegistry;
+import bk.Initialize.Recipe;
 import bk.Initialize.TileEntityRegister;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.event.*;
@@ -31,7 +32,7 @@ public class CommonProxy {
     }
     
     public void onInit(FMLInitializationEvent event) {
-        
+        Recipe.init();
     }
     
     public void onPostInit(FMLPostInitializationEvent event) {
