@@ -75,7 +75,7 @@ public class PotionCompressorTileEntity extends BaseMachineUpgradeTileEntity {
     
     @Override
     public String getName() {
-        return null;
+        return "bk:potioncopressor";
     }
     
     @Override
