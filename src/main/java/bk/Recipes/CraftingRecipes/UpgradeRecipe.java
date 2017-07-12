@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -53,6 +54,7 @@ public class UpgradeRecipe extends ShapelessRecipes {
         for (int i = 0; i < inv.getHeight(); ++i)
             for (int j = 0; j < inv.getWidth(); ++j) {
                 ItemStack itemstack = inv.getStackInRowAndColumn(j, i);
+                
                 if (itemstack.isEmpty()) {
                     emptyness++;
                     continue;
@@ -68,11 +70,34 @@ public class UpgradeRecipe extends ShapelessRecipes {
                 }
                 return false;
             }
-        return upgradeCount == 1 && emptyness < inv.getHeight() * inv.getWidth() - 1;
+        if (upgradeCount < 1) return false;
+        
+        if (upgradeCount == 1){
+            return emptyness < inv.getWidth() * inv.getHeight() - 1;
+        }
+        else {
+            return emptyness + upgradeCount == inv.getWidth() * inv.getHeight();
+        }
     }
     
     @Override
     public ItemStack getCraftingResult(InventoryCrafting inv) {
+        if (isSplitting(inv)){
+            ArrayList<ItemStack> stacks = new ArrayList<>();
+            for (int i = 0; i < inv.getHeight(); ++i)
+                for (int j = 0; j < inv.getWidth(); ++j) {
+                    ItemStack itemstack = inv.getStackInRowAndColumn(j, i);
+                    if (itemstack.isEmpty()) continue;
+                    if (itemstack.getItem() == ItemsInit.upgradeItem && itemstack.hasTagCompound()){
+                        stacks.add(itemstack);
+                    }                    
+                }
+            ItemStack stack = new ItemStack(new UpgradeItem());
+            for (ItemStack stack1 : stacks){
+                stack = UpgradeItem.addTags(stack, stack1);
+            }
+            return stack;
+        }
         int range = 0, power = 0, speed = 0;
         ItemStack stack = ItemStack.EMPTY;
     
@@ -87,7 +112,6 @@ public class UpgradeRecipe extends ShapelessRecipes {
                 if (itemstack.getItem() ==ItemsInit.upgradeItem)
                     stack = itemstack.copy();
             }
-        ItemStack stack1 = UpgradeItem.customizeUpgrade(stack, speed, range, power);
         return UpgradeItem.customizeUpgrade(stack, speed, range, power); 
     }
     
@@ -110,4 +134,23 @@ public class UpgradeRecipe extends ShapelessRecipes {
         
         return stack1.isPresent() ? stack1.get().getValue() : 0;
     }
+    
+    //region Helping Methods
+    private boolean isSplitting(InventoryCrafting inv) {
+        boolean isUpgrade = false;
+        
+        //Find two or more 
+        for (int i = 0; i < inv.getHeight(); ++i)
+            for (int j = 0; j < inv.getWidth(); ++j) {
+                ItemStack itemstack = inv.getStackInRowAndColumn(j, i);
+                if (itemstack.isEmpty()) continue;
+                if (ItemsInit.upgradeItem == itemstack.getItem()){
+                    if (isUpgrade) return true;
+                    isUpgrade = true;
+                }
+            }
+            return false;    
+    }
+    //endregion
+
 }

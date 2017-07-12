@@ -18,7 +18,7 @@ public class UpgradeItem extends BkItem {
     public static String speedName = "speed";
     public static String rangeName = "range";
     
-    private static int maxValue = 5000; 
+    public static int maxValue = 5000; 
     
     public UpgradeItem() {
         super("upgradeitem");
@@ -46,7 +46,7 @@ public class UpgradeItem extends BkItem {
         if (compound.hasKey(speedName))
             tooltip.add("Speed is " + compound.getInteger(speedName));
         if (compound.hasKey(powerName))
-            tooltip.add("Poswer is " + compound.getInteger(powerName));
+            tooltip.add("Power is " + compound.getInteger(powerName));
     }
     
     @Override
@@ -82,5 +82,15 @@ public class UpgradeItem extends BkItem {
         addTag(stack, power, powerName);
         addTag(stack, range, rangeName);
         return stack;
+    }
+    
+    public static ItemStack addTags(ItemStack target, ItemStack from){
+        NBTTagCompound compound = from.getTagCompound();
+        if (compound == null || compound.hasNoTags()) return target;
+        
+        int speed = compound.getInteger(speedName);
+        int range = compound.getInteger(rangeName);
+        int power = compound.getInteger(powerName);
+        return customizeUpgrade(target, speed, range, power);
     }
 }
