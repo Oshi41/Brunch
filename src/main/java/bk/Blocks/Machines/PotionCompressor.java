@@ -1,5 +1,6 @@
 package bk.Blocks.Machines;
 
+import bk.Gui.TileEntity.PotionCompressorTileEntity;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
@@ -13,7 +14,7 @@ import javax.annotation.Nullable;
 public class PotionCompressor extends BlockContainer {
     
     
-    protected PotionCompressor() {
+    public PotionCompressor() {
         super(Material.ANVIL);
         setRegistryName("potioncompressor");
         setUnlocalizedName("potioncompressor");
@@ -22,6 +23,6 @@ public class PotionCompressor extends BlockContainer {
     @Nullable
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return null;
+        return new PotionCompressorTileEntity();
     }
 }

@@ -4,6 +4,8 @@ import net.minecraft.block.Block;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Enchantments;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -12,6 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -86,8 +89,7 @@ public class Utils {
         }
         
         return result;
-    }
-    
+    }    
     
     //region NBT HELPER
     
@@ -146,4 +148,22 @@ public class Utils {
     }
     
     //endregion
+    
+    public static Slot[] getPlayerSlots(IInventory playerInv, Point hotbarPos, Point mainPos){
+        ArrayList<Slot> slots = new ArrayList<>();
+        
+        for (int i = 0; i < 9; i++){
+            slots.add(new Slot(playerInv, i, hotbarPos.x + i*16, hotbarPos.y));
+        }
+        for (int j = 0; j < 3; j++)
+            for (int i = 0; i < 9; i++){
+                int index = 9 + i + (j * 9);
+                int x = mainPos.x + i*16;
+                int y = mainPos.y + j*16;
+                slots.add(new Slot(playerInv, index, x,y));
+            }
+        
+        Slot[] result = new Slot[slots.size()];
+        return slots.toArray(result);
+    }
 }

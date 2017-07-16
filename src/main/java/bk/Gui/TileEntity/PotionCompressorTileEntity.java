@@ -1,12 +1,18 @@
 package bk.Gui.TileEntity;
 
 import bk.Base.Entity.TileEntity.BaseMachineUpgradeTileEntity;
+import bk.Gui.Container.PotionCompressorContainer;
 import bk.Initialize.ItemsInit;
 import bk.Items.UpgradeItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 
 import java.util.List;
@@ -14,7 +20,7 @@ import java.util.List;
 /**
  * Created by User on 08.07.2017.
  */
-public class PotionCompressorTileEntity extends BaseMachineUpgradeTileEntity {
+public class PotionCompressorTileEntity extends BaseMachineUpgradeTileEntity implements ISidedInventory {
     
     //0 - upgrade
     //1,2 - buckets
@@ -69,6 +75,8 @@ public class PotionCompressorTileEntity extends BaseMachineUpgradeTileEntity {
             return stack.getItem() == Items.WATER_BUCKET;
         if (index == 3)
             return TileEntityFurnace.isItemFuel(stack);
+        if (index == 13)
+            return true;
         //Retirn things with potion effects
         return PotionUtils.getEffectsFromStack(stack).size() > 0;
     }
@@ -82,4 +90,31 @@ public class PotionCompressorTileEntity extends BaseMachineUpgradeTileEntity {
     public boolean hasCustomName() {
         return false;
     }
+    
+    @Override
+    public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn) {
+        return new PotionCompressorContainer(this, playerIn);
+    }
+    
+    @Override
+    public String getGuiID() {
+        return "bk:potioncompressors";
+    }    
+    
+    //region ISidedInventory
+    @Override
+    public int[] getSlotsForFace(EnumFacing side) {
+        return new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+    }
+    
+    @Override
+    public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
+        return index != 13;
+    }
+    
+    @Override
+    public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
+        return index == 13;
+    }
+    //endregion
 }

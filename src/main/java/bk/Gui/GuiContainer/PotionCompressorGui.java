@@ -1,33 +1,57 @@
 package bk.Gui.GuiContainer;
 
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.inventory.Container;
+import bk.Base.Entity.TileEntity.BaseMachineUpgradeTileEntity;
+import bk.Base.GUI.BaseCookingGui;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 
 /**
- * Created by User on 09.07.2017.
+ * Created by User on 16.07.2017.
  */
-public class PotionCompressorGui extends GuiContainer {
+public class PotionCompressorGui extends BaseCookingGui {
     
-    private static final ResourceLocation FURNACE_GUI_TEXTURES = new ResourceLocation("bk:textures/gui/potioncompressor.png");
     /**
-     * The player inventory bound to this GUI.
+     * TileEntity must implement IInteractionObject!!!
+     *
+     * @param tileEntity
+     * @param player
      */
-//    private final InventoryPlayer playerInventory;
-//    private final IInventory tileFurnace;
-    
-    public PotionCompressorGui(Container inventorySlotsIn) {
-        super(inventorySlotsIn);
+    public PotionCompressorGui(BaseMachineUpgradeTileEntity tileEntity, EntityPlayer player) {
+        super(tileEntity, player);
     }
-
-//    public PotionCompressorGui(InventoryPlayer playerInv, IInventory furnaceInv) {
-//        super(new SingularityContainer(playerInv, furnaceInv));
-//        this.playerInventory = playerInv;
-//        this.tileFurnace = furnaceInv;
-//    }
     
     @Override
-    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        
+    public ResourceLocation getTexture() {
+        return new ResourceLocation("bk:potioncompressor");
+    }
+    
+    @Override
+    public int getWidth() {
+        return 175;
+    }
+    
+    @Override
+    public int getHeight() {
+        return 208;
+    }
+    
+    @Override
+    public int getFireWidth() {
+        return 80;
+    }
+    
+    @Override
+    public int getFireHeight() {
+        return 79;
+    }
+    
+    @Override
+    public int getCookWidth() {
+        return 115;
+    }
+    
+    @Override
+    public int getCookHeight() {
+        return 34;
     }
 }

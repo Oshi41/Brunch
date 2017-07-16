@@ -11,6 +11,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
+import net.minecraft.world.IInteractionObject;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,13 +19,14 @@ import java.util.Optional;
 /**
  * Created by User on 12.07.2017.
  */
-public abstract class BaseMachineUpgradeTileEntity extends TileEntity implements ITickable, IInventory {  
+public abstract class BaseMachineUpgradeTileEntity extends TileEntity implements ITickable, IInventory, IInteractionObject {  
     
     private final String remainingCookTimeName = "cooktime";
     private final String burnTimeName = "burntime";
     
     public static int remainingCookTime;
-    public static int burnTime;    
+    public static int burnTime;
+    public static int totalBurnTime;
     
     //region Abstract    
     /**
@@ -111,6 +113,7 @@ public abstract class BaseMachineUpgradeTileEntity extends TileEntity implements
             }
         }
         burnTime = result;
+        totalBurnTime = burnTime;
         return burnTime > 0;
     }
     
@@ -228,30 +231,54 @@ public abstract class BaseMachineUpgradeTileEntity extends TileEntity implements
     @Override
     public void closeInventory(EntityPlayer player) {
         
-    }    
+    }
+    
+    /**
+     * 0 - total Cook Time
+     * 1 - remaining cook time
+     * 2 - total burn Time
+     * 3 - remaining burn time
+     * @param id
+     * @return
+     */
     @Override
     public int getField(int id) {
         switch (id){
             case 0:
-                return remainingCookTime;
+                return getTotalCookTime();
             case 1:
+                return remainingCookTime;
+            case 2:
+                return totalBurnTime;
+            case 3:
                 return burnTime;
             default:
-                return 0;
+                return -1;
         }
-    }    
+    }
+    
+    /**
+     * 0 - total Cook Time
+     * 1 - remaining cook time
+     * 2 - total burn Time
+     * 3 - remaining burn time 
+     * @param id
+     * @param value
+     */
     @Override
     public void setField(int id, int value) {
         switch (id){
-            case 0:
-                remainingCookTime = value;
             case 1:
+                remainingCookTime = value;
+            case 2:
+                totalBurnTime = value;
+            case 3:
                 burnTime = value;
         }
     }    
     @Override
     public int getFieldCount() {
-        return 2;
+        return 4;
     }    
     @Override
     public void clear() {

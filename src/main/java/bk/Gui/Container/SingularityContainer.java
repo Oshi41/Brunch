@@ -47,8 +47,7 @@ public class SingularityContainer extends Container {
     
         for (int chestRow = 0; chestRow < numRows; chestRow++) {
             for (int chestCol = 0; chestCol < numCols; chestCol++) {
-                addSlotToContainer(new UnlimitedSlot(tileEntity, chestCol + chestRow * numCols, 12 +
-                        chestCol * 18, 8 + chestRow * 18));
+                addSlotToContainer(new UnlimitedSlot(tileEntity, chestCol + chestRow * numCols, 12 + chestCol * 18, 8 + chestRow * 18));
             }
         }
     

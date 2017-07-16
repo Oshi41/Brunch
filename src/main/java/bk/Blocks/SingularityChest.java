@@ -1,5 +1,6 @@
 package bk.Blocks;
 
+import bk.Base.BaseVanilla.IBkBase;
 import bk.BookCraft;
 import bk.Gui.GuiHandler;
 import bk.Gui.TileEntity.SingularityTileEntity;
@@ -20,7 +21,7 @@ import javax.annotation.Nullable;
 /**
  * Created by User on 07.07.2017.
  */
-public class SingularityChest extends BlockContainer {    
+public class SingularityChest extends BlockContainer implements IBkBase {    
     
     public static final String name = "singularitychest";
     
@@ -55,5 +56,14 @@ public class SingularityChest extends BlockContainer {
             }
         }
         super.breakBlock(worldIn, pos, state);
+    }
+    
+    @Override
+    public String getName() {
+        return name;
+    }
+    
+    @Override
+    public void registerItemModel() {
     }
 }

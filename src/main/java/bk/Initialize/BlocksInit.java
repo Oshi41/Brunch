@@ -1,6 +1,7 @@
 package bk.Initialize;
 
 import bk.Base.BaseVanilla.IBkBase;
+import bk.Blocks.Machines.PotionCompressor;
 import bk.Blocks.SingularityChest;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
@@ -12,13 +13,14 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class BlocksInit  {
 
     //region Fields
-    //public static UltimateChest ultimateChest;
+    public static PotionCompressor potionCompressor;
     public static SingularityChest singularityChest;
     //endregion
 
     public static void init(){
         //ultimateChest = register(new UltimateChest());
         singularityChest = register(new SingularityChest());
+        potionCompressor = register(new PotionCompressor());
     }
 
     //region Helping Methods
