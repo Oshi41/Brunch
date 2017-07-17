@@ -22,7 +22,7 @@ public class PotionCompressorGui extends BaseCookingGui {
     
     @Override
     public ResourceLocation getTexture() {
-        return new ResourceLocation("bk:potioncompressor");
+        return new ResourceLocation("bk:textures/gui/potioncompressor.png");
     }
     
     @Override

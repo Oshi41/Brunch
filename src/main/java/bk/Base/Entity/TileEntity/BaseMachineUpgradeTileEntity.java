@@ -126,6 +126,7 @@ public abstract class BaseMachineUpgradeTileEntity extends TileEntity implements
     public boolean isBurning(){
         return burnTime > 0;
     }
+    public boolean isCooking(){return remainingCookTime > 0;}
     //endregion
     
     //region ITickable
@@ -196,6 +197,7 @@ public abstract class BaseMachineUpgradeTileEntity extends TileEntity implements
     }    
     @Override
     public ItemStack getStackInSlot(int index) {
+        if (index < 0 || index >= getInventory().size()) return ItemStack.EMPTY;
         return getInventory().get(index);
     }    
     @Override
@@ -208,6 +210,8 @@ public abstract class BaseMachineUpgradeTileEntity extends TileEntity implements
     }    
     @Override
     public void setInventorySlotContents(int index, ItemStack stack) {
+        if (index < 0 || index >= getInventory().size()) return;
+        
         NonNullList<ItemStack> list = getInventory();
         list.set(index, stack);
     

@@ -1,6 +1,5 @@
 package bk.Initialize;
 
-import bk.Base.BaseVanilla.IBkBase;
 import bk.Blocks.Machines.PotionCompressor;
 import bk.Blocks.SingularityChest;
 import net.minecraft.block.Block;
@@ -28,13 +27,13 @@ public class BlocksInit  {
         GameRegistry.register(block);
         GameRegistry.register(itemBlock);
 
-
         if (itemBlock.getHasSubtypes()){
             itemBlock = ItemsInit.registerWithSubtypes(itemBlock);
         }
-        if (block instanceof IBkBase) {
-            ((IBkBase)block).registerItemModel();
-        }
+        
+//        if (block instanceof IBkBase) {
+//            ((IBkBase)block).registerItemModel();
+//        }
 
         return block;
     }

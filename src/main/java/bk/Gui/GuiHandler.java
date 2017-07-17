@@ -1,6 +1,8 @@
 package bk.Gui;
 
+import bk.Gui.GuiContainer.PotionCompressorGui;
 import bk.Gui.GuiContainer.SingularityGUI;
+import bk.Gui.TileEntity.PotionCompressorTileEntity;
 import bk.Gui.TileEntity.SingularityTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -17,6 +19,7 @@ import javax.annotation.Nullable;
  */
 public class GuiHandler implements IGuiHandler {
     public static final int SingularityGUIId = 1002;
+    public static final int PotionGuiID = 1001;
     
     public static IGuiHandler getInstance() {
         return instance;
@@ -37,6 +40,9 @@ public class GuiHandler implements IGuiHandler {
                 if (tileEntity instanceof SingularityTileEntity){
                     return container;
                 }
+            case PotionGuiID:
+                if (tileEntity instanceof PotionCompressorTileEntity)
+                    return container;
         }
         
         return null;
@@ -53,6 +59,10 @@ public class GuiHandler implements IGuiHandler {
             case SingularityGUIId:
                 if (tileEntity instanceof SingularityTileEntity){
                 return new SingularityGUI(container);
+                }
+            case PotionGuiID:
+                if (tileEntity instanceof PotionCompressorTileEntity){
+                return new PotionCompressorGui((PotionCompressorTileEntity) tileEntity, player);
                 }
         }
         

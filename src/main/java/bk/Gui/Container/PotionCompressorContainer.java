@@ -1,10 +1,12 @@
 package bk.Gui.Container;
 
+import bk.Gui.TileEntity.PotionCompressorTileEntity;
+import bk.Utils.SlotFactory;
 import bk.Utils.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.SlotFurnaceFuel;
 import net.minecraft.item.ItemStack;
 
 import java.awt.*;
@@ -14,35 +16,39 @@ import java.awt.*;
  */
 public class PotionCompressorContainer extends Container {
     
-    private final IInventory tileEntity;
+    private final PotionCompressorTileEntity tileEntity;
     
     //region Drawind
     private final int size = 16; 
     //endregion
     
-    public PotionCompressorContainer(IInventory tileEntity, EntityPlayer player) {
+    public PotionCompressorContainer(PotionCompressorTileEntity tileEntity, EntityPlayer player) {
         this.tileEntity = tileEntity;
         
         //0 - upgrade
         addSlotToContainer(new Slot(tileEntity, 0, 8, 9));     
         
         //1,2 - buckets
-        addSlotToContainer(new Slot(tileEntity, 1, 8, 53));
-        addSlotToContainer(new Slot(tileEntity, 2, 26, 53));
+        addSlotToContainer(SlotFactory.getWaterBucketSlot(tileEntity, 1, 8, 53).setTakePredicat(x -> tileEntity.isCooking()));
+        addSlotToContainer(SlotFactory.getWaterBucketSlot(tileEntity, 2, 26, 53).setTakePredicat(x -> tileEntity.isCooking()));
         
         //3 - fuel
-        addSlotToContainer(new Slot(tileEntity, 3, 81, 97));
+        addSlotToContainer(new SlotFurnaceFuel(tileEntity, 3, 81, 97));
+        //addSlotToContainer(SlotFactory.getOutupSlot(tileEntity, 3, 81, 97));
         
+        int index = 4;
         // 4 - 12 crafting slots
         for (int i = 0; i < 3; i++)
-            for (int j = 0; j < 3; j++){
-                int index = 4 + j * (i * 3);
+            for (int j = 0; j < 3; j++){                
                 int x = 60 + j * 16;
                 int y = 16 + i * 16;
-                addSlotToContainer(new Slot(tileEntity, index, x, y));
+                addSlotToContainer(SlotFactory.getPotionSlot(tileEntity, index, x, y).
+                        setTakePredicat(temp -> tileEntity.isCooking()));
+                index++;
             }
-        //13 - fuel
-        addSlotToContainer(new Slot(tileEntity, 13, 146, 34));
+            
+        //13 - output
+        addSlotToContainer(SlotFactory.getOutupSlot(tileEntity, 13, 146, 34));
         
         //player inventory
         Slot[] slots = Utils.getPlayerSlots(player.inventory, new Point(7,183), new Point(7,125));

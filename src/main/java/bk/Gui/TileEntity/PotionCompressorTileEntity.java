@@ -41,7 +41,6 @@ public class PotionCompressorTileEntity extends BaseMachineUpgradeTileEntity imp
     
     /**
      * Increase cook time by three times as vanilla furnace
-     *
      * @return
      */
     @Override

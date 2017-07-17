@@ -6,7 +6,6 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.IInteractionObject;
 
 /**
  * Created by User on 16.07.2017.
@@ -37,7 +36,7 @@ public abstract class BaseCookingGui extends GuiContainer {
      * @param player
      */
     public BaseCookingGui(BaseMachineUpgradeTileEntity tileEntity, EntityPlayer player) {
-        super(((IInteractionObject) tileEntity).createContainer(player.inventory, player));
+        super(tileEntity.createContainer(player.inventory, player));
         this.player = player;
         this.tileEntity = tileEntity;
     }
